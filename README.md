@@ -11,7 +11,7 @@
   </p>
 </div>
 
-![看板首页](docs/screenshots/board-view.jpg)
+![看板首页](docs/board-view.jpg)
 
 ## 这是什么
 
@@ -34,27 +34,27 @@
 <table>
   <tr>
     <td width="50%" valign="top">
-      <img alt="首页概览" src="docs/screenshots/board-view.jpg">
+      <img alt="首页概览" src="docs/board-view.jpg">
       <p><strong>首页 / 看板页</strong><br>查看投递概览、下一场面试和各阶段分布。</p>
     </td>
     <td width="50%" valign="top">
-      <img alt="列表页" src="docs/screenshots/list-view.jpg">
+      <img alt="列表页" src="docs/list-view.jpg">
       <p><strong>列表页</strong><br>按进度、心仪度和关键词快速筛选与查看。</p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <img alt="新增投递" src="docs/screenshots/new-application.jpg">
+      <img alt="新增投递" src="docs/new-application.jpg">
       <p><strong>新增投递记录</strong><br>一次填完整个岗位信息，后续持续追踪。</p>
     </td>
     <td width="50%" valign="top">
-      <img alt="截图识别" src="docs/screenshots/ocr-import.jpg">
+      <img alt="截图识别" src="docs/ocr-import.jpg">
       <p><strong>截图识别</strong><br>可选择图片、拖入图片，或直接按 <code>⌘V</code> 粘贴截图。</p>
     </td>
   </tr>
   <tr>
     <td colspan="2" valign="top" align="center">
-      <img alt="面试复盘" src="docs/screenshots/interview-notes.jpg">
+      <img alt="面试复盘" src="docs/interview-notes.jpg">
       <p><strong>面试记录页</strong><br>每一轮都能单独记录问题、回答、感受和改进点。</p>
     </td>
   </tr>
