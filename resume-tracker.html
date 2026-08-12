@@ -1344,11 +1344,21 @@
 
   .records-heading { margin-bottom: 13px; }
   .records-heading h3 { font-size: 18px; }
+  .records-surface {
+    --records-pane-height: clamp(360px, calc(100vh - 430px), 760px);
+    position: relative;
+    min-height: var(--records-pane-height);
+  }
+  .records-surface > .card,
+  .records-surface > .board {
+    height: var(--records-pane-height);
+    min-height: var(--records-pane-height);
+  }
   .toolbar { margin: 0; padding: 0; background: none; border: 0; box-shadow: none; backdrop-filter: none; flex-wrap: nowrap; }
   .toolbar select, .search-box input { min-height: 34px; padding-top: 6px; padding-bottom: 6px; background-color: #faf9fd; border-color: var(--border-soft); font-size: 11px; }
   .search-box input { width: 190px; padding-left: 31px; }
 
-  .card { border: 1px solid var(--border-soft); border-radius: 15px; box-shadow: none; }
+  .card { border: 1px solid var(--border-soft); border-radius: 15px; box-shadow: none; min-height: 0; }
   table { min-width: 980px; }
   th, td { padding: 12px 14px; }
   thead th { background: #faf9fd; color: #aaa8b9; font-size: 9px; letter-spacing: .07em; }
@@ -1359,8 +1369,9 @@
   .badge { padding: 3px 8px; font-size: 10px; }
   .link-icon { color: var(--accent); }
 
-  .board { grid-auto-columns: minmax(250px, 1fr); gap: 12px; }
-  .col { padding: 11px; border: 1px solid var(--border-soft); background: #faf9fd; box-shadow: none; }
+  .board { grid-auto-columns: minmax(250px, 1fr); gap: 12px; align-items: stretch; }
+  .col { padding: 11px; border: 1px solid var(--border-soft); background: #faf9fd; box-shadow: none; display: flex; flex-direction: column; min-height: 0; max-height: 100%; }
+  .col-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-right: 4px; }
   .ticket { border: 0; box-shadow: 0 6px 18px rgba(65,52,125,.05); }
   .ticket:hover { box-shadow: 0 12px 24px rgba(65,52,125,.09); }
   .col.drop-hover { outline-color: var(--accent); background: var(--accent-softer); }
@@ -1378,6 +1389,7 @@
     .summary-panel { padding: 24px 18px; }
     .workspace-panel { padding: 24px 22px 30px; }
     .records-heading { align-items: flex-start; flex-direction: column; }
+    .records-surface { --records-pane-height: clamp(320px, calc(100vh - 420px), 660px); }
     .toolbar { width: 100%; }
     .search-box { flex: 1; }
     .search-box input { width: 100%; }
@@ -1416,6 +1428,7 @@
     .workspace-heading { align-items: flex-start; }
     .focus-grid { grid-template-columns: 1fr; }
     .focus-card { min-height: 136px; }
+    .records-surface { --records-pane-height: min(56vh, 520px); }
     .toolbar { flex-wrap: wrap; }
     .toolbar select { flex: 1 1 calc(50% - 4px); }
     .search-box { flex-basis: 100%; order: 3; }
@@ -1662,14 +1675,16 @@
             </div>
           </div>
 
-          <div class="card" id="view-table">
-            <table>
-              <thead><tr id="thead-row"></tr></thead>
-              <tbody id="tbody"></tbody>
-            </table>
-          </div>
+          <div class="records-surface">
+            <div class="card" id="view-table">
+              <table>
+                <thead><tr id="thead-row"></tr></thead>
+                <tbody id="tbody"></tbody>
+              </table>
+            </div>
 
-          <div class="board hidden" id="view-board"></div>
+            <div class="board hidden" id="view-board"></div>
+          </div>
         </section>
       </div>
     </main>
