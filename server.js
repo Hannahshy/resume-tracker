@@ -170,7 +170,7 @@ const server = http.createServer(async (req, res) => {
   }
 
   // 静态文件：返回主页面
-  if (pathname === "/" || pathname === "/index.html") {
+  if (pathname === "/" || pathname === "/index.html" || pathname === "/demo") {
     sendStatic(res);
     return;
   }

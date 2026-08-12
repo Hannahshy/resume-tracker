@@ -1680,10 +1680,15 @@
 
 <script>
 /* ============================================================
+   PAGE FLAGS
+   ============================================================ */
+const DEMO_MODE = window.location.pathname === "/demo" || new URLSearchParams(window.location.search).get("demo") === "1";
+
+/* ============================================================
    CONFIG
    ============================================================ */
 const CONFIG = {
-  storageKey: "resume-tracker-v2",
+  storageKey: DEMO_MODE ? "resume-tracker-demo-v1" : "resume-tracker-v2",
   apiBase: "/api",
 
   // 进度状态 — 统一 Apple System Colors
@@ -1759,6 +1764,217 @@ const CONFIG = {
     },
   ],
 
+  demoSeed: [
+    {
+      id: 1001, company: "挚文集团·陌陌", role: "社交产品经理",
+      status: "applied", priority: "A", salary: "15-30K·16薪", location: "北京",
+      applyDate: "2026-08-12", nextDate: "",
+      url: "https://example.com/demo/mo-mo-pm",
+      positionDescription: "负责社交产品方向的需求分析与功能规划，协同研发推动产品上线。",
+      jdDescription: "1. 跟踪社交业务关键数据，推动版本优化。\n2. 输出需求文档并跟进设计、研发、测试进度。",
+      jdRequirements: "1. 具备互联网产品实习或项目经验。\n2. 表达清晰，对用户体验敏感。",
+      note: "演示数据：社交方向样例岗位。",
+      interviews: []
+    },
+    {
+      id: 1002, company: "挚文集团·陌陌", role: "商业化产品运营",
+      status: "applied", priority: "B", salary: "15-25K·16薪", location: "北京",
+      applyDate: "2026-08-12", nextDate: "",
+      url: "https://example.com/demo/momo-ops",
+      positionDescription: "围绕商业化增长目标，参与活动运营和数据复盘。",
+      jdDescription: "1. 协助搭建活动方案，复盘转化数据。\n2. 联动产研优化投放与转化链路。",
+      jdRequirements: "1. 对数据分析和商业化感兴趣。\n2. 有较强执行力与沟通能力。",
+      note: "演示数据：运营岗。",
+      interviews: []
+    },
+    {
+      id: 1003, company: "拓竹科技", role: "CyberBrick 产品经理 - 行业应用方向",
+      status: "applied", priority: "A", salary: "面议", location: "深圳",
+      applyDate: "2026-08-12", nextDate: "",
+      url: "https://example.com/demo/cyberbrick-pm",
+      positionDescription: "负责行业解决方案的产品规划，参与客户场景梳理和需求定义。",
+      jdDescription: "1. 研究行业应用场景，拆解客户痛点。\n2. 协调内外部资源推进方案落地。",
+      jdRequirements: "1. 有硬件、工具型产品或产业互联网背景优先。\n2. 逻辑清晰，能独立推进项目。",
+      note: "演示数据：硬件行业产品方向。",
+      interviews: []
+    },
+    {
+      id: 1004, company: "小宇宙播客", role: "内容运营实习生",
+      status: "screening", priority: "S", salary: "180-220/天", location: "上海",
+      applyDate: "2026-08-10", nextDate: "",
+      url: "https://example.com/demo/podcast-ops",
+      positionDescription: "参与内容分发策略和频道运营，服务内容增长目标。",
+      jdDescription: "1. 维护频道选题与内容标签。\n2. 配合活动策划和用户反馈收集。",
+      jdRequirements: "1. 对内容平台和播客生态有热情。\n2. 审美稳定，文字表达佳。",
+      note: "演示数据：内容平台。",
+      interviews: [
+        { stage: "简历筛选", date: "2026-08-11", summary: "HR 已确认简历进入筛选池，预计本周内是否推进一面。" }
+      ]
+    },
+    {
+      id: 1005, company: "远山设计", role: "用户研究助理",
+      status: "assessment", priority: "B", salary: "15-20K", location: "杭州",
+      applyDate: "2026-08-10", nextDate: "",
+      url: "https://example.com/demo/research",
+      positionDescription: "协助用户访谈、竞品研究与体验诊断。",
+      jdDescription: "1. 参与访谈记录整理和洞察归纳。\n2. 支持竞品对比与用户旅程分析。",
+      jdRequirements: "1. 心理学、设计、社会学相关背景优先。\n2. 细致耐心，能结构化整理信息。",
+      note: "演示数据：已进入测评环节。",
+      interviews: [
+        { stage: "测评/AI面/笔试", date: "2026-08-11", summary: "完成在线测评，题型以信息整理和场景判断为主。" }
+      ]
+    },
+    {
+      id: 1006, company: "岚图汽车", role: "数字化发展",
+      status: "round1", priority: "B", salary: "14-20K", location: "武汉",
+      applyDate: "2026-08-03", nextDate: "2026-08-13",
+      url: "https://example.com/demo/voyah-digital",
+      positionDescription: "支持数字化项目推进，围绕业务系统建设和流程优化协同落地。",
+      jdDescription: "1. 参与项目需求收集和跨部门沟通。\n2. 跟进数字化系统上线后的反馈与优化。",
+      jdRequirements: "1. 具备项目管理和信息化认知。\n2. 沟通推动力较强。",
+      note: "演示数据：下一场面试会显示在顶部卡片。",
+      interviews: [
+        { stage: "一面", date: "2026-08-13", summary: "业务面，重点准备过往项目推进案例和跨团队协作经验。" }
+      ]
+    },
+    {
+      id: 1007, company: "赛禾科技", role: "数字化系统产品经理",
+      status: "round1", priority: "A", salary: "面议", location: "上海",
+      applyDate: "2026-06-17", nextDate: "",
+      url: "https://example.com/demo/saile-product",
+      positionDescription: "面向企业流程与系统协同场景，推进产品规划和需求落地。",
+      jdDescription: "1. 负责系统需求梳理和原型方案输出。\n2. 跟进研发与上线验收。",
+      jdRequirements: "1. 有 B 端产品经验优先。\n2. 能独立进行需求拆解。",
+      note: "演示数据：正在推进第一轮。",
+      interviews: [
+        { stage: "一面", date: "2026-08-08", summary: "聊了项目方法论和需求优先级判断，反馈偏正向。" }
+      ]
+    },
+    {
+      id: 1008, company: "白昼工作室", role: "品牌策划实习生",
+      status: "round2", priority: "S", salary: "面议", location: "远程",
+      applyDate: "2026-08-09", nextDate: "2026-08-15",
+      url: "https://example.com/demo/brand",
+      positionDescription: "参与品牌内容策划、项目执行与创意资料整理。",
+      jdDescription: "1. 协助完成社媒选题和传播方案。\n2. 整理市场案例，支持项目复盘。",
+      jdRequirements: "1. 文案表达稳定，审美在线。\n2. 能按节奏推进多任务。",
+      note: "演示数据：复盘编辑器可打开查看。",
+      interviews: [
+        { stage: "一面", date: "2026-08-12", summary: "<p>一面主要围绕作品集与过往活动复盘展开。</p><ul><li>问题偏实际执行</li><li>看重内容策划能力</li></ul>" },
+        { stage: "二面", date: "2026-08-15", summary: "" }
+      ]
+    },
+    {
+      id: 1009, company: "知行健康", role: "增长运营经理",
+      status: "round2", priority: "A", salary: "22-30K", location: "广州",
+      applyDate: "2026-07-28", nextDate: "2026-08-14",
+      url: "https://example.com/demo/growth",
+      positionDescription: "围绕用户增长与留存目标，制定策略并推动落地执行。",
+      jdDescription: "1. 负责拉新、留存与活动运营方案。\n2. 与数据、产品、设计协作优化转化漏斗。",
+      jdRequirements: "1. 有增长或商业化经验优先。\n2. 结果导向，擅长复盘。",
+      note: "演示数据：二面中。",
+      interviews: [
+        { stage: "一面", date: "2026-08-06", summary: "一面聚焦增长项目拆解和核心指标。" },
+        { stage: "二面", date: "2026-08-14", summary: "" }
+      ]
+    },
+    {
+      id: 1010, company: "未来像素", role: "产品策划",
+      status: "round3", priority: "A", salary: "18-28K", location: "成都",
+      applyDate: "2026-07-25", nextDate: "2026-08-18",
+      url: "https://example.com/demo/future-pixel",
+      positionDescription: "围绕创意产品规划用户体验和功能路线图。",
+      jdDescription: "1. 协调设计、研发推进版本上线。\n2. 进行用户反馈梳理与迭代建议输出。",
+      jdRequirements: "1. 有作品或项目案例。\n2. 乐于沟通，思考细腻。",
+      note: "演示数据：三面准备中。",
+      interviews: [
+        { stage: "一面", date: "2026-08-02", summary: "聊了项目经历和问题拆解方式。" },
+        { stage: "二面", date: "2026-08-09", summary: "二面更关注跨团队合作和推动力。" },
+        { stage: "三面", date: "2026-08-18", summary: "" }
+      ]
+    },
+    {
+      id: 1011, company: "星河教育", role: "学习产品负责人",
+      status: "final", priority: "S", salary: "28-38K", location: "北京",
+      applyDate: "2026-07-18", nextDate: "2026-08-16",
+      url: "https://example.com/demo/edu-product",
+      positionDescription: "负责学习产品线规划、增长与商业化协同。",
+      jdDescription: "1. 制定版本路线图并跟踪关键结果。\n2. 管理跨职能团队推进产品落地。",
+      jdRequirements: "1. 具备较强 owner 意识。\n2. 有教育或内容平台经验优先。",
+      note: "演示数据：终面。",
+      interviews: [
+        { stage: "一面", date: "2026-07-26", summary: "聊产品判断和用户需求分析。" },
+        { stage: "二面", date: "2026-08-01", summary: "关注增长思路和业务理解。" },
+        { stage: "终面", date: "2026-08-16", summary: "" }
+      ]
+    },
+    {
+      id: 1012, company: "北辰科技", role: "HRBP 培训生",
+      status: "offer", priority: "B", salary: "16-22K", location: "苏州",
+      applyDate: "2026-07-05", nextDate: "",
+      url: "https://example.com/demo/hrbp",
+      positionDescription: "支持招聘、培训和组织发展项目。",
+      jdDescription: "1. 协助招聘流程推进和人才盘点。\n2. 支持培训与文化活动组织。",
+      jdRequirements: "1. 细致稳妥，擅长沟通。\n2. 对人力资源工作有长期兴趣。",
+      note: "演示数据：已收到 offer，待决策。",
+      interviews: [
+        { stage: "HR谈薪", date: "2026-08-07", summary: "薪资与入职时间已确认，等待正式 offer 邮件。" }
+      ]
+    },
+    {
+      id: 1013, company: "青禾消费", role: "渠道运营",
+      status: "offer", priority: "A", salary: "18-24K", location: "杭州",
+      applyDate: "2026-06-30", nextDate: "",
+      url: "https://example.com/demo/channel-ops",
+      positionDescription: "参与渠道合作策略与资源协调。",
+      jdDescription: "1. 推进渠道合作执行和复盘。\n2. 分析转化数据，提出优化建议。",
+      jdRequirements: "1. 擅长沟通和多方协调。\n2. 对消费品牌和增长有兴趣。",
+      note: "演示数据：offer 已到，正在比较选择。",
+      interviews: [
+        { stage: "终面", date: "2026-07-29", summary: "终面后两天收到录用意向。" }
+      ]
+    },
+    {
+      id: 1014, company: "栖川内容", role: "内容策划",
+      status: "joined", priority: "A", salary: "17-22K", location: "上海",
+      applyDate: "2026-05-22", nextDate: "",
+      url: "https://example.com/demo/content",
+      positionDescription: "负责内容栏目策划、选题推进与数据复盘。",
+      jdDescription: "1. 负责内容选题和传播节奏安排。\n2. 与设计和运营协作推进项目上线。",
+      jdRequirements: "1. 文案和内容 sense 强。\n2. 节奏感好，执行力强。",
+      note: "演示数据：已入职。",
+      interviews: [
+        { stage: "HR谈薪", date: "2026-06-10", summary: "顺利谈妥薪资，已确认入职。" }
+      ]
+    },
+    {
+      id: 1015, company: "观测实验室", role: "数据分析师",
+      status: "rejected", priority: "C", salary: "20-28K", location: "南京",
+      applyDate: "2026-07-14", nextDate: "",
+      url: "https://example.com/demo/data-analyst",
+      positionDescription: "负责业务数据分析、指标体系搭建与专项研究。",
+      jdDescription: "1. 分析经营与用户数据，支持业务决策。\n2. 形成可执行的洞察报告。",
+      jdRequirements: "1. SQL / Excel 基础扎实。\n2. 逻辑清晰，能独立表达结论。",
+      note: "演示数据：流程结束。",
+      interviews: [
+        { stage: "二面", date: "2026-07-24", summary: "案例面偏难，后续收到不推进通知。" }
+      ]
+    },
+    {
+      id: 1016, company: "新月文旅", role: "活动策划",
+      status: "rejected", priority: "B", salary: "14-18K", location: "西安",
+      applyDate: "2026-07-02", nextDate: "",
+      url: "https://example.com/demo/event-plan",
+      positionDescription: "参与品牌活动策划和线下落地执行。",
+      jdDescription: "1. 负责活动方案和执行跟进。\n2. 协同供应商和内部团队推进节点。",
+      jdRequirements: "1. 有活动统筹经验优先。\n2. 抗压且执行力强。",
+      note: "演示数据：流程结束。",
+      interviews: [
+        { stage: "一面", date: "2026-07-10", summary: "岗位方向不够匹配，后续未推进。" }
+      ]
+    }
+  ],
+
   // 统计 — 使用 SVG icon 而非 emoji
   stats: [
     { label: "总投递数", icon: "doc", calc: items => items.length },
@@ -1793,6 +2009,17 @@ const ICONS = {
 
 const INTERVIEW_STAGES = ["一面", "二面", "三面", "终面", "HR谈薪"];
 
+function getLocalTodayISO(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getDefaultItems() {
+  return structuredClone(DEMO_MODE ? CONFIG.demoSeed : CONFIG.seed);
+}
+
 /* ============================================================
    数据层 — 优先用后端 API，回退 localStorage
    ============================================================ */
@@ -1800,6 +2027,11 @@ const store = {
   apiOnline: false,
 
   async load() {
+    if (DEMO_MODE) {
+      const raw = localStorage.getItem(CONFIG.storageKey);
+      if (raw) { try { return JSON.parse(raw); } catch (e) {} }
+      return getDefaultItems();
+    }
     try {
       const res = await fetch(`${CONFIG.apiBase}/items`);
       if (res.ok) {
@@ -1811,10 +2043,14 @@ const store = {
     this.apiOnline = false;
     const raw = localStorage.getItem(CONFIG.storageKey);
     if (raw) { try { return JSON.parse(raw); } catch (e) {} }
-    return structuredClone(CONFIG.seed);
+    return getDefaultItems();
   },
 
   async save(items) {
+    if (DEMO_MODE) {
+      localStorage.setItem(CONFIG.storageKey, JSON.stringify(items));
+      return;
+    }
     if (this.apiOnline) {
       try {
         await fetch(`${CONFIG.apiBase}/items`, {
@@ -1829,7 +2065,7 @@ const store = {
   },
 };
 
-let items = CONFIG.seed;
+let items = getDefaultItems();
 let currentView = "table";
 
 const $ = sel => document.querySelector(sel);
@@ -2195,6 +2431,11 @@ function openOCRDialog(onApply) {
 function updateApiStatus() {
   const el = $("#api-status");
   const txt = $("#api-status-text");
+  if (DEMO_MODE) {
+    el.className = "api-status offline";
+    txt.textContent = "演示模式";
+    return;
+  }
   if (store.apiOnline) {
     el.className = "api-status online";
     txt.textContent = "已同步";
@@ -2226,7 +2467,7 @@ function renderStats() {
 }
 
 function renderFocus() {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = getLocalTodayISO();
   const active = items.filter(i => !["rejected", "joined"].includes(i.status));
   const upcoming = active
     .filter(i => i.nextDate && i.nextDate >= today)
@@ -2277,7 +2518,7 @@ function cell(item, col) {
   if (col.key === "nextDate") {
     const d = item.nextDate;
     if (!d) return `<span style="color:var(--text-quaternary)">—</span>`;
-    const today = new Date().toISOString().slice(0,10);
+    const today = getLocalTodayISO();
     const color = d < today ? "var(--red)" : d === today ? "var(--orange)" : "var(--text)";
     return `<span style="color:${color};font-weight:500">${d}</span>`;
   }
@@ -2398,7 +2639,7 @@ async function persist() {
    ============================================================ */
 function openModal(item) {
   const editing = !!item;
-  const today = new Date().toISOString().slice(0, 10);
+  const today = getLocalTodayISO();
   const d = editing ? structuredClone(item) : {
     id: Date.now(),
     company: "", role: "",
