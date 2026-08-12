@@ -1,0 +1,2642 @@
+<!-- 简历投递管理 — Apple Refined Aesthetic -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#f5f5f7" />
+<title>求职进度 · 简历投递管理</title>
+<style>
+  /* ============================================================
+     Apple Design Tokens
+     统一配色 · 精致阴影 · SF 字体层级
+     ============================================================ */
+  :root {
+    /* 背景层 */
+    --bg: #f5f5f7;
+    --bg-grain: #ececf0;
+
+    /* 表面 */
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --surface-glass: rgba(250, 250, 252, 0.78);
+    --surface-overlay: rgba(255, 255, 255, 0.72);
+
+    /* 边框 */
+    --border: rgba(60, 60, 67, 0.20);
+    --border-soft: rgba(60, 60, 67, 0.11);
+    --border-faint: rgba(60, 60, 67, 0.075);
+
+    /* 文字 */
+    --text: #1d1d1f;
+    --text-secondary: #424245;
+    --text-tertiary: #6e6e73;
+    --text-quaternary: #86868b;
+
+    /* 主色 — SF Blue */
+    --accent: #007aff;
+    --accent-hover: #0783ff;
+    --accent-active: #006be0;
+    --accent-soft: #e7f1ff;
+    --accent-softer: #f1f7ff;
+
+    /* 语义色 — Apple System Colors */
+    --blue: #0071e3;
+    --green: #34c759;
+    --indigo: #5856d6;
+    --orange: #ff9500;
+    --pink: #ff2d55;
+    --purple: #af52de;
+    --red: #ff3b30;
+    --teal: #30b0c7;
+    --yellow: #ffcc00;
+
+    /* 语义色浅底 */
+    --green-soft: #e8f9ed;
+    --orange-soft: #fff5e6;
+    --red-soft: #fff0f0;
+    --purple-soft: #f5f0fe;
+    --blue-soft: #e8f1fd;
+    --indigo-soft: #eee9fe;
+    --teal-soft: #e4f7fa;
+    --pink-soft: #ffeef2;
+
+    /* 圆角 */
+    --r-xl: 20px;
+    --r-lg: 16px;
+    --r-md: 12px;
+    --r-sm: 10px;
+    --r-xs: 8px;
+
+    /* 阴影 — 多层精细 */
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.035);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.035), 0 5px 18px rgba(0,0,0,0.035);
+    --shadow-md: 0 2px 5px rgba(0,0,0,0.035), 0 12px 28px rgba(0,0,0,0.065);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.08), 0 24px 48px rgba(0,0,0,0.10);
+    --shadow-xl: 0 12px 32px rgba(0,0,0,0.12), 0 32px 72px rgba(0,0,0,0.14);
+
+    /* 字体 */
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "PingFang SC", system-ui, sans-serif;
+
+    /* 动效 */
+    --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --t-fast: 0.15s;
+    --t-base: 0.2s;
+    --t-slow: 0.3s;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.47059;
+    letter-spacing: -0.022em;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 12% -8%, rgba(0, 122, 255, 0.12), transparent 28%),
+      radial-gradient(circle at 92% 5%, rgba(88, 86, 214, 0.08), transparent 24%);
+  }
+
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 0 40px; }
+
+  /* ============================================================
+     顶部导航栏 — 毛玻璃
+     ============================================================ */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface-glass);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(60, 60, 67, 0.08);
+  }
+  .navbar-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    min-height: 64px;
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .brand { display: flex; align-items: center; gap: 11px; }
+  .brand-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #1688ff 0%, #0064d9 55%, #3f4fc4 100%);
+    display: grid; place-items: center;
+    color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.32), 0 6px 14px rgba(0, 113, 227, 0.22);
+  }
+  .brand-icon svg { width: 18px; height: 18px; }
+  .brand-text h1 {
+    font-size: 14px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .brand-text p {
+    font-size: 10.5px;
+    color: var(--text-quaternary);
+    margin-top: 0;
+    letter-spacing: 0.006em;
+  }
+
+  .nav-spacer { flex: 1; }
+
+  .api-status {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    padding: 6px 12px;
+    background: var(--surface-overlay);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-soft);
+    border-radius: 980px;
+    transition: var(--t-base) var(--ease);
+  }
+  .api-status .pulse {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--text-quaternary);
+    position: relative;
+    transition: background var(--t-base) var(--ease);
+  }
+  .api-status.online .pulse {
+    background: var(--green);
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.18);
+  }
+  .api-status.offline .pulse {
+    background: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255, 149, 0, 0.18);
+  }
+
+  /* ============================================================
+     内容区
+     ============================================================ */
+  .content { padding: 42px 0 64px; }
+
+  .page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .page-heading-copy { max-width: 680px; }
+  .eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .page-heading h2 {
+    font-size: clamp(30px, 3.2vw, 42px);
+    font-weight: 720;
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+  }
+  .page-heading p {
+    margin-top: 10px;
+    color: var(--text-tertiary);
+    font-size: 15px;
+    letter-spacing: -0.012em;
+  }
+
+  /* —— 视图切换 Segmented Control —— */
+  .segment {
+    display: inline-flex;
+    gap: 0;
+    background: rgba(118, 118, 128, 0.12);
+    border-radius: 9px;
+    padding: 2px;
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .segment-item {
+    padding: 6px 15px;
+    cursor: pointer;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: -0.008em;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    font-family: var(--font);
+    transition: color var(--t-fast) var(--ease), background var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .segment-item svg { width: 14px; height: 14px; }
+  .segment-item:hover { color: var(--text-secondary); }
+  .segment-item.active {
+    color: var(--text);
+    background: var(--surface);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 0.5px 1px rgba(0,0,0,0.04);
+  }
+
+  /* —— 统计卡片 —— */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .stat {
+    background: linear-gradient(145deg, rgba(255,255,255,0.96), rgba(255,255,255,0.76));
+    border: 1px solid rgba(255,255,255,0.78);
+    border-radius: 18px;
+    padding: 20px 21px 18px;
+    box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--border-faint);
+    overflow: hidden;
+    position: relative;
+    transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out);
+    animation: fadeInUp 0.5s var(--ease-out) backwards;
+  }
+  .stat:nth-child(1) { animation-delay: 0s; }
+  .stat:nth-child(2) { animation-delay: 0.04s; }
+  .stat:nth-child(3) { animation-delay: 0.08s; }
+  .stat:nth-child(4) { animation-delay: 0.12s; }
+
+  .stat:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .stat::after {
+    content: "";
+    position: absolute;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    right: -38px;
+    top: -42px;
+    background: currentColor;
+    opacity: 0.035;
+  }
+  .stat-row { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+  .stat-label {
+    color: var(--text-tertiary);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.006em;
+  }
+  .stat-icon {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    display: grid; place-items: center;
+    transition: transform var(--t-base) var(--ease);
+  }
+  .stat:hover .stat-icon { transform: scale(1.08); }
+  .stat-icon svg { width: 16px; height: 16px; stroke-width: 2; }
+  .stat:nth-child(1) .stat-icon { background: var(--blue-soft); color: var(--blue); }
+  .stat:nth-child(2) .stat-icon { background: var(--orange-soft); color: var(--orange); }
+  .stat:nth-child(3) .stat-icon { background: var(--green-soft); color: var(--green); }
+  .stat:nth-child(4) .stat-icon { background: var(--purple-soft); color: var(--purple); }
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* —— 工具栏 —— */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    padding: 10px;
+    background: rgba(255,255,255,0.64);
+    border: 1px solid rgba(255,255,255,0.84);
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 1px var(--border-faint), var(--shadow-xs);
+    backdrop-filter: blur(16px) saturate(140%);
+  }
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 980px;
+    min-height: 36px;
+    padding: 8px 17px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: var(--font);
+    letter-spacing: -0.006em;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 10px rgba(0, 122, 255, 0.16);
+    transition: background var(--t-fast) var(--ease), transform var(--t-fast) var(--ease), box-shadow var(--t-base) var(--ease);
+  }
+  .btn svg { width: 14px; height: 14px; stroke-width: 2.5; }
+  .btn:hover { background: var(--accent-hover); box-shadow: 0 6px 16px rgba(0, 122, 255, 0.22); }
+  .btn:active { transform: scale(0.96); }
+  .btn.ghost {
+    background: var(--surface);
+    color: var(--text);
+    border: 0.5px solid var(--border);
+    box-shadow: var(--shadow-xs);
+  }
+  .btn.ghost:hover { background: var(--bg-grain); }
+  .btn.danger { background: var(--red); }
+  .btn.danger:hover { background: #ff453a; }
+  .spacer { flex: 1; }
+
+  .search-box { position: relative; }
+  .search-box svg {
+    position: absolute; left: 11px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-quaternary);
+    pointer-events: none;
+  }
+  .search-box input {
+    padding-left: 32px;
+    width: 240px;
+    background: rgba(255,255,255,0.82);
+  }
+  input, select, textarea {
+    font-family: var(--font);
+    font-size: 14px;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-sm);
+    min-height: 36px;
+    padding: 8px 11px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    letter-spacing: -0.006em;
+    transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-base) var(--ease);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 76px;
+    line-height: 1.5;
+    border-radius: var(--r-sm);
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3.5px var(--accent-softer);
+  }
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid rgba(0, 122, 255, 0.24);
+    outline-offset: 2px;
+  }
+  input::placeholder, textarea::placeholder { color: var(--text-quaternary); }
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%2386868b' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M3 5l3 3 3-3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+    cursor: pointer;
+  }
+
+  /* —— 表格视图 —— */
+  .card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.84);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--border-faint);
+    overflow: auto;
+    animation: fadeInUp 0.5s var(--ease-out) 0.16s backwards;
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 1080px; }
+  th, td {
+    text-align: left;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-faint);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  thead th {
+    background: rgba(248,248,250,0.92);
+    color: var(--text-quaternary);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  tbody tr { transition: background var(--t-fast) var(--ease); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--bg); }
+  td.name { font-weight: 500; cursor: pointer; }
+  td.name:hover { color: var(--accent); }
+  td .company-text {
+    color: var(--text-quaternary);
+    font-size: 12px;
+    font-weight: 400;
+    display: block;
+    margin-top: 1px;
+  }
+  .company-cell { display: flex; align-items: center; gap: 11px; }
+  .company-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    background: linear-gradient(145deg, #eef6ff, #e5efff);
+    border: 1px solid rgba(0,122,255,0.08);
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.85);
+  }
+  .role-text { font-weight: 600; color: var(--text); }
+
+  /* —— 徽章 —— */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 980px;
+    font-size: 12px;
+    font-weight: 550;
+    letter-spacing: -0.006em;
+  }
+  .badge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+  .col-actions { width: 48px; text-align: center; }
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 28px; height: 28px;
+    border-radius: var(--r-xs);
+    border: none;
+    background: transparent;
+    color: var(--text-quaternary);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity var(--t-fast) var(--ease), background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+  }
+  tbody tr:hover .icon-btn, .ticket:hover .icon-btn { opacity: 0.55; }
+  .icon-btn:hover { opacity: 1 !important; background: var(--red-soft); color: var(--red); }
+  .icon-btn svg { width: 14px; height: 14px; }
+  .link-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 26px; height: 26px;
+    color: var(--accent);
+    cursor: pointer;
+    opacity: 0.5;
+    border-radius: var(--r-xs);
+    transition: opacity var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+    text-decoration: none;
+  }
+  .link-icon:hover { opacity: 1; background: var(--accent-soft); }
+
+  /* —— 空状态 —— */
+  .empty-state {
+    text-align: center;
+    padding: 64px 20px;
+  }
+  .empty-state svg { width: 40px; height: 40px; color: var(--text-quaternary); opacity: 0.35; margin-bottom: 14px; }
+  .empty-state .empty-title { font-size: 15px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; }
+  .empty-state .empty-sub { font-size: 13px; color: var(--text-quaternary); }
+
+  /* —— 看板视图 —— */
+  .board {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(286px, 1fr);
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    animation: fadeInUp 0.5s var(--ease-out) 0.16s backwards;
+  }
+  .col {
+    background: var(--surface-overlay);
+    border: 1px solid rgba(255,255,255,0.82);
+    border-radius: var(--r-lg);
+    padding: 12px;
+    backdrop-filter: blur(12px);
+    box-shadow: inset 0 0 0 1px var(--border-faint);
+  }
+  .col-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 2px 4px;
+  }
+  .col-title { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .col-count {
+    color: var(--text-quaternary);
+    font-weight: 500;
+    background: var(--bg-grain);
+    border-radius: 980px;
+    padding: 1px 8px;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  .col-body {
+    min-height: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ticket {
+    position: relative;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-md);
+    padding: 13px 14px;
+    cursor: grab;
+    background: var(--surface);
+    box-shadow: var(--shadow-xs);
+    transition: transform var(--t-base) var(--ease-out), box-shadow var(--t-base) var(--ease-out);
+  }
+  .ticket:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .ticket.dragging { opacity: 0.35; cursor: grabbing; }
+  .ticket .t-name { font-weight: 600; margin-bottom: 3px; padding-right: 22px; font-size: 13px; letter-spacing: -0.01em; }
+  .ticket .t-company {
+    color: var(--text-quaternary);
+    font-size: 12px;
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .ticket .t-company svg { width: 11px; height: 11px; flex-shrink: 0; opacity: 0.6; }
+  .ticket .t-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-quaternary);
+    font-size: 12px;
+  }
+  .ticket .t-meta .t-next { display: flex; align-items: center; gap: 3px; color: var(--orange); font-weight: 500; }
+  .ticket .t-meta .t-next svg { width: 11px; height: 11px; }
+  .ticket .t-meta .t-salary { display: flex; align-items: center; gap: 3px; }
+  .ticket .t-meta .t-salary svg { width: 11px; height: 11px; opacity: 0.6; }
+  .ticket .t-del { position: absolute; top: 7px; right: 7px; opacity: 0; }
+  .ticket:hover .t-del { opacity: 0.55; }
+  .col.drop-hover {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+    background: var(--accent-softer);
+  }
+
+  .hidden { display: none !important; }
+
+  /* —— Modal —— */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 4vh 0;
+    overflow-y: auto;
+    animation: overlayIn 0.2s var(--ease-out);
+    z-index: 9999;
+  }
+  @keyframes overlayIn { from { opacity: 0; } }
+  .modal {
+    background: var(--surface);
+    border-radius: var(--r-xl);
+    padding: 28px 30px;
+    width: 660px;
+    max-width: 94vw;
+    box-shadow: var(--shadow-xl);
+    animation: modalIn 0.28s var(--ease-spring);
+    margin: auto 0;
+    border: 1px solid rgba(255,255,255,0.72);
+  }
+  @keyframes modalIn {
+    from { transform: translateY(12px) scale(0.97); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  .modal h2 { font-size: 19px; font-weight: 700; letter-spacing: -0.018em; }
+  .modal .sub { color: var(--text-quaternary); font-size: 13px; margin-top: 3px; margin-bottom: 24px; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    margin: 22px 0 12px;
+    padding-top: 18px;
+    border-top: 0.5px solid var(--border-faint);
+    letter-spacing: -0.006em;
+  }
+  .section-title:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
+  .section-title svg { width: 14px; height: 14px; stroke-width: 2; }
+
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 12px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    letter-spacing: -0.004em;
+  }
+  .field input, .field select, .field textarea { width: 100%; }
+  .field.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .field.grid-2 .field { margin-bottom: 0; }
+  .field.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .field.grid-3 .field { margin-bottom: 0; }
+
+  .modal-actions { display: flex; align-items: center; gap: 8px; margin-top: 26px; }
+  .link-danger {
+    color: var(--red);
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 12px;
+    border-radius: var(--r-xs);
+    font-family: var(--font);
+    transition: background var(--t-fast) var(--ease);
+  }
+  .link-danger:hover { background: var(--red-soft); }
+
+  /* 面试记录 */
+  .interview-list { display: flex; flex-direction: column; gap: 8px; }
+  .interview-item {
+    background: var(--bg);
+    border: 0.5px solid var(--border-faint);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    transition: background var(--t-fast) var(--ease);
+  }
+  .interview-item:hover { background: var(--bg-grain); }
+  .interview-item .i-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .interview-item .i-stage { font-weight: 600; font-size: 13px; letter-spacing: -0.008em; }
+  .interview-item .i-date {
+    color: var(--text-quaternary);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .interview-item .i-date svg { width: 11px; height: 11px; }
+  .interview-item .i-summary {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 8px 9px;
+    background: rgba(255,255,255,.58);
+    color: var(--text-secondary);
+    font-family: var(--font);
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 4px;
+    cursor: pointer;
+    transition: border-color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+  }
+  .interview-item .i-summary:hover {
+    border-color: var(--accent-soft);
+    background: var(--surface);
+    box-shadow: var(--shadow-xs);
+  }
+  .i-summary-preview {
+    min-width: 0;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  .i-summary-preview p, .i-summary-preview div { margin: 0 0 4px; }
+  .i-summary-preview ul, .i-summary-preview ol { margin: 2px 0 4px; padding-left: 20px; }
+  .i-summary-preview h2, .i-summary-preview h3 { margin: 0 0 4px; font-size: 14px; }
+  .i-summary-preview.is-empty { color: var(--text-quaternary); }
+  .i-summary-edit {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .i-summary-edit svg { width: 12px; height: 12px; }
+  .interview-add {
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) 140px minmax(180px, 1.3fr) 38px 38px;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .interview-rows { display: flex; flex-direction: column; gap: 10px; }
+  .interview-add + .interview-add { margin-top: 0; }
+  .interview-add input, .interview-add select { padding: 6px 10px; font-size: 13px; }
+  .summary-launcher {
+    min-width: 0;
+    height: 33px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    color: var(--text-quaternary);
+    font-family: var(--font);
+    font-size: 13px;
+    text-align: left;
+    cursor: zoom-in;
+    transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+  }
+  .summary-launcher:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-softer); }
+  .summary-launcher.has-content { color: var(--text); }
+  .summary-launcher-text { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .summary-launcher-icon { flex: 0 0 auto; color: var(--accent); font-size: 12px; }
+  .interview-add button { height: 33px; padding: 0 12px; white-space: nowrap; font-size: 13px; }
+  .interview-row-action {
+    width: 38px;
+    padding: 0 !important;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border-soft);
+    border-radius: 11px;
+    background: #fffdfa;
+    color: var(--text-tertiary);
+    font-family: var(--font);
+    font-size: 20px !important;
+    cursor: pointer;
+  }
+  .interview-row-add { color: #fff; border-color: var(--accent); background: var(--accent); box-shadow: 0 7px 16px rgba(113,50,181,.18); }
+  .interview-row-add:hover { background: var(--accent-hover); }
+  .interview-row-remove:hover { color: var(--red); border-color: #f0cfc7; background: #fae8e2; }
+  .interview-row-number { display: none; }
+  .empty-hint { color: var(--text-quaternary); font-size: 13px; padding: 8px 4px; }
+
+  .text-editor-overlay {
+    z-index: 10020;
+    padding: 7vh 20px;
+    align-items: center;
+    background: rgba(28, 25, 45, .32);
+  }
+  .text-editor {
+    width: min(760px, 94vw);
+    padding: 24px;
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: var(--shadow-xl);
+    animation: modalIn .24s var(--ease-out);
+  }
+  .text-editor-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px;
+  }
+  .text-editor-header h3 { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+  .text-editor-header p { margin-top: 4px; color: var(--text-tertiary); font-size: 12px; }
+  .text-editor-close {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    border: 0;
+    border-radius: 50%;
+    background: var(--bg-grain);
+    color: var(--text-tertiary);
+    cursor: pointer;
+  }
+  .text-editor-close:hover { background: var(--accent-soft); color: var(--accent); }
+  .text-editor-close svg { width: 15px; height: 15px; }
+  .rich-text-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px;
+    border: 1px solid var(--border-soft);
+    border-bottom: 0;
+    border-radius: 14px 14px 0 0;
+    background: #faf9fd;
+    overflow-x: auto;
+  }
+  .rich-text-toolbar select {
+    width: 106px;
+    min-height: 32px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 12px;
+    background-color: #fff;
+  }
+  .editor-tool {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font);
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .editor-tool:hover, .editor-tool.active { color: var(--accent); background: var(--accent-soft); }
+  .editor-tool svg { width: 15px; height: 15px; }
+  .editor-tool.tool-bold { font-weight: 800; }
+  .editor-tool.tool-italic { font-style: italic; font-family: Georgia, serif; }
+  .editor-tool.tool-underline { text-decoration: underline; }
+  .editor-tool.tool-strike { text-decoration: line-through; }
+  .toolbar-divider { width: 1px; height: 20px; flex: 0 0 auto; margin: 0 3px; background: var(--border-soft); }
+  .rich-editor-surface {
+    width: 100%;
+    min-height: min(48vh, 420px);
+    max-height: 58vh;
+    padding: 16px;
+    overflow-y: auto;
+    border: 1px solid var(--border-soft);
+    border-radius: 0 0 14px 14px;
+    background: #fff;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    outline: none;
+  }
+  .rich-editor-surface:focus { border-color: #9c86ff; box-shadow: 0 0 0 3.5px #f0ecff; }
+  .rich-editor-surface:empty::before { content: attr(data-placeholder); color: var(--text-quaternary); pointer-events: none; }
+  .rich-editor-surface p { margin: 0 0 .75em; }
+  .rich-editor-surface h2 { margin: .4em 0 .45em; font-size: 22px; line-height: 1.35; }
+  .rich-editor-surface h3 { margin: .4em 0 .45em; font-size: 17px; line-height: 1.4; }
+  .rich-editor-surface ul, .rich-editor-surface ol { margin: .4em 0 .75em; padding-left: 26px; }
+  .rich-editor-surface blockquote { margin: .6em 0; padding: 7px 12px; border-left: 3px solid var(--accent); color: var(--text-tertiary); background: var(--accent-softer); }
+  .rich-editor-surface div { min-height: 1.7em; }
+  .rich-editor-hint {
+    margin-top: 7px;
+    color: var(--text-quaternary);
+    font-size: 10px;
+  }
+  .text-editor-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .text-editor-count { color: var(--text-quaternary); font-size: 11px; }
+
+  /* 提示条 */
+  .help-tip {
+    background: var(--accent-softer);
+    border-radius: var(--r-md);
+    padding: 12px 14px 12px 16px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    border: 0.5px solid var(--accent-soft);
+  }
+  .help-tip svg { width: 15px; height: 15px; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+  .help-tip b { color: var(--accent); font-weight: 600; }
+
+  .section-title.with-action { justify-content: space-between; }
+  .section-title-label { display: inline-flex; align-items: center; gap: 7px; }
+  .ocr-trigger {
+    margin-left: auto;
+    min-height: 32px;
+    padding: 6px 11px;
+    border: 1px solid var(--accent-soft);
+    border-radius: 11px;
+    background: var(--accent-softer);
+    color: var(--accent);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 650;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ocr-trigger:hover { background: var(--accent-soft); }
+  .ocr-trigger svg { width: 14px; height: 14px; }
+  .ocr-modal { width: min(780px, 94vw); }
+  .ocr-dropzone {
+    min-height: 164px;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    border: 1.5px dashed #d8c9df;
+    border-radius: 18px;
+    background: #faf6f1;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color .18s ease, background .18s ease, transform .18s ease;
+  }
+  .ocr-dropzone:hover, .ocr-dropzone.dragover { border-color: var(--accent); background: var(--accent-softer); transform: translateY(-1px); }
+  .ocr-dropzone-icon {
+    width: 46px;
+    height: 46px;
+    margin: 0 auto 12px;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .ocr-dropzone-icon svg { width: 22px; height: 22px; }
+  .ocr-dropzone strong { display: block; font-size: 14px; }
+  .ocr-dropzone span { display: block; margin-top: 5px; color: var(--text-tertiary); font-size: 11px; }
+  .ocr-status {
+    min-height: 36px;
+    margin: 12px 0 0;
+    padding: 9px 11px;
+    border-radius: 10px;
+    color: var(--text-tertiary);
+    background: #f8f3ed;
+    font-size: 11px;
+  }
+  .ocr-status.loading { color: var(--accent); background: var(--accent-softer); }
+  .ocr-status.error { color: var(--red); background: #fae8e2; }
+  .ocr-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .ocr-preview .field { margin-bottom: 0; }
+  .ocr-preview .field.ocr-position-description { grid-column: 1 / -1; }
+  .ocr-preview textarea { min-height: 210px; }
+  .ocr-preview .ocr-position-description textarea { min-height: 120px; }
+  .ocr-file-name { margin-top: 9px; color: var(--text-secondary); font-size: 11px; font-weight: 600; }
+  .ocr-paste-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .ocr-paste-button {
+    min-height: 36px;
+    padding: 8px 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--accent-soft);
+    border-radius: 12px;
+    background: var(--accent-softer);
+    color: var(--accent);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  .ocr-paste-button:hover { background: var(--accent-soft); }
+  .ocr-paste-button svg { width: 14px; height: 14px; }
+  .ocr-shortcut {
+    padding: 4px 7px;
+    border: 1px solid var(--border-soft);
+    border-bottom-width: 2px;
+    border-radius: 7px;
+    color: var(--text-tertiary);
+    background: #fffdfa;
+    font-size: 10px;
+    font-weight: 650;
+  }
+
+  @media (max-width: 620px) {
+    .section-title.with-action { align-items: flex-start; gap: 10px; }
+    .ocr-trigger { white-space: nowrap; }
+    .ocr-preview { grid-template-columns: 1fr; }
+    .ocr-preview .field.ocr-position-description { grid-column: auto; }
+    .ocr-preview textarea { min-height: 150px; }
+    .ocr-paste-row { flex-wrap: wrap; }
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(29, 29, 31, 0.88);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    color: #fff;
+    padding: 11px 22px;
+    border-radius: 980px;
+    box-shadow: var(--shadow-lg);
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity var(--t-base) var(--ease-out), transform var(--t-base) var(--ease-spring);
+    pointer-events: none;
+    z-index: 10000;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* 滚动条 */
+  ::-webkit-scrollbar { width: 7px; height: 7px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+
+  @media (max-width: 900px) {
+    .wrap, .navbar-inner { padding-left: 20px; padding-right: 20px; }
+    .content { padding-top: 30px; }
+    .page-heading { align-items: flex-start; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .toolbar .spacer { display: none; }
+    .toolbar .btn { margin-left: auto; }
+    .search-box { flex: 1; min-width: 200px; }
+    .search-box input { width: 100%; }
+  }
+
+  @media (max-width: 620px) {
+    .wrap, .navbar-inner { padding-left: 14px; padding-right: 14px; }
+    .brand-text p, .api-status #api-status-text { display: none; }
+    .api-status { width: 28px; height: 28px; padding: 0; justify-content: center; }
+    .page-heading { display: block; margin-bottom: 22px; }
+    .page-heading h2 { font-size: 30px; }
+    .page-heading p { font-size: 14px; }
+    .page-heading .btn { margin-top: 18px; }
+    .stats { gap: 10px; }
+    .stat { padding: 16px; }
+    .stat-value { font-size: 28px; }
+    .segment { display: flex; width: 100%; }
+    .segment-item { flex: 1; justify-content: center; }
+    .toolbar { align-items: stretch; }
+    .toolbar select { flex: 1 1 calc(50% - 4px); }
+    .search-box { order: 3; flex-basis: 100%; }
+    .toolbar .btn { display: none; }
+    .modal { padding: 24px 20px; border-radius: 18px; }
+    .field.grid-2, .field.grid-3 { grid-template-columns: 1fr; }
+    .interview-add { grid-template-columns: 1fr 1fr 38px 38px; padding: 12px; border: 1px solid var(--border-soft); border-radius: 14px; background: #faf6f1; }
+    .interview-add .summary-launcher { grid-column: 1 / 3; }
+    .interview-row-number { display: block; grid-column: 1 / -1; color: var(--text-tertiary); font-size: 10px; font-weight: 650; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+  }
+
+  /* ============================================================
+     Light dashboard theme — inspired by the supplied reference
+     ============================================================ */
+  :root {
+    --bg: #fbfbff;
+    --bg-grain: #f5f4fb;
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --surface-overlay: rgba(255,255,255,0.86);
+    --surface-glass: rgba(255,255,255,0.9);
+    --border: #deddea;
+    --border-soft: #ecebf4;
+    --border-faint: #f2f1f7;
+    --text: #1f2033;
+    --text-secondary: #4f5065;
+    --text-tertiary: #88899b;
+    --text-quaternary: #b0b1c0;
+    --accent: #6c4cff;
+    --accent-hover: #5d3ff0;
+    --accent-active: #5033dc;
+    --accent-soft: #eee9ff;
+    --accent-softer: #f7f4ff;
+    --blue: #6c4cff;
+    --purple: #8b63ef;
+    --green: #54d99a;
+    --orange: #ffc857;
+    --pink: #ff829d;
+    --red: #ff657f;
+    --teal: #62d8c7;
+    --shadow-xs: 0 2px 8px rgba(65, 52, 125, 0.035);
+    --shadow-sm: 0 8px 24px rgba(65, 52, 125, 0.055);
+    --shadow-md: 0 14px 34px rgba(65, 52, 125, 0.09);
+    --shadow-lg: 0 20px 48px rgba(65, 52, 125, 0.14);
+    --font: "Avenir Next", Avenir, -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", system-ui, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    letter-spacing: -0.012em;
+  }
+  body::before { display: none; }
+
+  .app-shell { min-height: 100vh; }
+  .side-rail {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 200;
+    width: 88px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border-right: 1px solid var(--border-soft);
+  }
+  .rail-logo {
+    position: relative;
+    width: 88px;
+    height: 76px;
+    display: grid;
+    place-items: center;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .rail-logo::before {
+    content: "";
+    width: 40px;
+    height: 35px;
+    border-radius: 11px;
+    background: linear-gradient(145deg, #8f67ff 0%, #633cff 68%);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    filter: drop-shadow(0 8px 10px rgba(108,76,255,0.2));
+  }
+  .rail-logo-core {
+    position: absolute;
+    top: 42px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #ff8ca5;
+    box-shadow: 0 0 0 5px rgba(255,255,255,0.12);
+  }
+  .rail-nav {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding-top: 118px;
+  }
+  .rail-item {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    color: #b7b4c9;
+    cursor: pointer;
+    transition: color .18s ease, background .18s ease, transform .18s ease;
+  }
+  .rail-item svg { width: 20px; height: 20px; }
+  .rail-item:hover { color: var(--accent); background: var(--accent-softer); transform: translateY(-1px); }
+  .rail-item.active { color: #fff; background: linear-gradient(145deg, #8563ff, #6746ef); box-shadow: 0 9px 20px rgba(108,76,255,.24); }
+  .rail-item.active::before {
+    content: "";
+    position: absolute;
+    left: -24px;
+    width: 3px;
+    height: 26px;
+    border-radius: 0 3px 3px 0;
+    background: #ff8ca5;
+  }
+  .rail-bottom { padding: 0 0 28px; }
+  .rail-dot { display: block; width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 5px rgba(84,217,154,.14); }
+
+  .app-main { min-height: 100vh; margin-left: 88px; }
+  .navbar {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,.92);
+    border-bottom: 1px solid var(--border-soft);
+    backdrop-filter: blur(20px);
+  }
+  .navbar-inner {
+    max-width: none;
+    min-height: 76px;
+    padding: 0 34px;
+    gap: 18px;
+  }
+  .brand-text h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.025em; }
+  .brand-text p { margin-top: 2px; color: var(--text-quaternary); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+  .api-status { background: #fbfbfe; border-color: var(--border-soft); padding: 7px 12px; }
+  .api-status.online .pulse { background: var(--green); box-shadow: 0 0 0 3px rgba(84,217,154,.15); }
+  .navbar .btn { min-height: 38px; padding: 8px 16px; }
+
+  .content { padding: 38px 34px 54px; }
+  .page-heading { max-width: 1500px; margin: 0 auto 28px; align-items: flex-start; }
+  .eyebrow { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: .13em; margin-bottom: 8px; }
+  .page-heading h2 { font-size: clamp(28px, 3vw, 38px); font-weight: 700; letter-spacing: -0.045em; }
+  .page-heading p { margin-top: 8px; color: var(--text-tertiary); font-size: 14px; }
+
+  .dashboard-grid {
+    max-width: 1500px;
+    min-height: 690px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    background: #fff;
+    border: 1px solid var(--border-soft);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(52,42,100,.055);
+  }
+  .summary-panel {
+    padding: 28px 24px;
+    background: linear-gradient(180deg, #fbfaff 0%, #f8f7fc 100%);
+    border-right: 1px solid var(--border-soft);
+  }
+  .workspace-panel { min-width: 0; padding: 28px 30px 34px; background: #fff; }
+  .section-heading, .records-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+  }
+  .section-kicker { display: block; margin-bottom: 4px; color: var(--text-quaternary); font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .section-heading h3, .records-heading h3 { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
+  .section-date { color: var(--text-tertiary); font-size: 11px; }
+
+  .summary-panel .stats { display: flex; flex-direction: column; gap: 12px; margin: 22px 0 18px; }
+  .summary-panel .stat {
+    min-height: 104px;
+    padding: 16px 16px 14px;
+    border: 0;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 9px 24px rgba(63,51,116,.045);
+  }
+  .summary-panel .stat::after { display: none; }
+  .summary-panel .stat:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .summary-panel .stat-row { margin-bottom: 8px; align-items: center; }
+  .summary-panel .stat-label { color: var(--text-tertiary); font-size: 10px; font-weight: 700; letter-spacing: .045em; text-transform: uppercase; }
+  .summary-panel .stat-icon { width: 29px; height: 29px; border-radius: 9px; }
+  .summary-panel .stat-icon svg { width: 14px; height: 14px; }
+  .summary-panel .stat-value { font-size: 25px; font-weight: 720; color: #272844; }
+  .summary-panel .stat:nth-child(1) .stat-icon { color: #6c4cff; background: #eee9ff; }
+  .summary-panel .stat:nth-child(2) .stat-icon { color: #ff9a38; background: #fff1d9; }
+  .summary-panel .stat:nth-child(3) .stat-icon { color: #24b977; background: #e0f9ed; }
+  .summary-panel .stat:nth-child(4) .stat-icon { color: #ff6480; background: #ffe9ef; }
+
+  .workspace-heading { margin-bottom: 22px; }
+  .segment { margin: 0; padding: 3px; border-radius: 10px; background: #f4f2fa; }
+  .segment-item { min-width: 58px; justify-content: center; padding: 6px 13px; border-radius: 8px; color: var(--text-tertiary); }
+  .segment-item.active { color: #fff; background: var(--accent); box-shadow: 0 5px 12px rgba(108,76,255,.22); }
+
+  .focus-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 28px; }
+  .focus-card {
+    position: relative;
+    min-height: 150px;
+    padding: 20px;
+    border-radius: 17px;
+    overflow: hidden;
+    color: #37334d;
+  }
+  .focus-card::after { content: ""; position: absolute; width: 150px; height: 150px; right: -58px; bottom: -85px; border: 22px solid rgba(255,255,255,.23); border-radius: 50%; }
+  .focus-card.purple { background: linear-gradient(140deg, #b29af6, #9f86ed); box-shadow: 0 16px 28px rgba(145,113,224,.18); }
+  .focus-card.yellow { background: linear-gradient(140deg, #ffe391, #ffd875); box-shadow: 0 16px 28px rgba(224,181,68,.17); }
+  .focus-card.empty { background: linear-gradient(140deg, #e9e5f8, #dfdaef); box-shadow: none; }
+  .focus-label { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; opacity: .78; }
+  .focus-label svg { width: 15px; height: 15px; }
+  .focus-value { margin-top: 22px; font-size: 21px; font-weight: 720; letter-spacing: -.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .focus-meta { margin-top: 4px; font-size: 11px; opacity: .62; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .focus-pill { display: inline-flex; margin-top: 13px; padding: 4px 8px; border: 1px solid rgba(54,48,75,.14); border-radius: 999px; font-size: 9px; font-weight: 700; }
+
+  .records-heading { margin-bottom: 13px; }
+  .records-heading h3 { font-size: 18px; }
+  .toolbar { margin: 0; padding: 0; background: none; border: 0; box-shadow: none; backdrop-filter: none; flex-wrap: nowrap; }
+  .toolbar select, .search-box input { min-height: 34px; padding-top: 6px; padding-bottom: 6px; background-color: #faf9fd; border-color: var(--border-soft); font-size: 11px; }
+  .search-box input { width: 190px; padding-left: 31px; }
+
+  .card { border: 1px solid var(--border-soft); border-radius: 15px; box-shadow: none; }
+  table { min-width: 980px; }
+  th, td { padding: 12px 14px; }
+  thead th { background: #faf9fd; color: #aaa8b9; font-size: 9px; letter-spacing: .07em; }
+  tbody tr:hover { background: #fcfbff; }
+  .company-mark { width: 31px; height: 31px; border-radius: 9px; color: var(--accent); background: #f0ecff; border: 0; box-shadow: none; }
+  .role-text { font-size: 12px; }
+  td .company-text { font-size: 10px; }
+  .badge { padding: 3px 8px; font-size: 10px; }
+  .link-icon { color: var(--accent); }
+
+  .board { grid-auto-columns: minmax(250px, 1fr); gap: 12px; }
+  .col { padding: 11px; border: 1px solid var(--border-soft); background: #faf9fd; box-shadow: none; }
+  .ticket { border: 0; box-shadow: 0 6px 18px rgba(65,52,125,.05); }
+  .ticket:hover { box-shadow: 0 12px 24px rgba(65,52,125,.09); }
+  .col.drop-hover { outline-color: var(--accent); background: var(--accent-softer); }
+
+  .btn { background: var(--accent); box-shadow: 0 7px 16px rgba(108,76,255,.2); }
+  .btn:hover { background: var(--accent-hover); box-shadow: 0 9px 20px rgba(108,76,255,.26); }
+  .btn.ghost { color: var(--text); background: #fff; border-color: var(--border-soft); box-shadow: var(--shadow-xs); }
+  input:focus, select:focus, textarea:focus { border-color: #9c86ff; box-shadow: 0 0 0 3.5px #f0ecff; }
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline-color: rgba(108,76,255,.25); }
+  .modal { border-radius: 20px; border-color: var(--border-soft); }
+  .overlay { background: rgba(36,32,56,.25); }
+
+  @media (max-width: 1100px) {
+    .dashboard-grid { grid-template-columns: 230px minmax(0, 1fr); }
+    .summary-panel { padding: 24px 18px; }
+    .workspace-panel { padding: 24px 22px 30px; }
+    .records-heading { align-items: flex-start; flex-direction: column; }
+    .toolbar { width: 100%; }
+    .search-box { flex: 1; }
+    .search-box input { width: 100%; }
+  }
+
+  @media (max-width: 820px) {
+    .side-rail { width: 68px; }
+    .rail-logo { width: 68px; }
+    .rail-nav { padding-top: 72px; }
+    .rail-item.active::before { left: -14px; }
+    .app-main { margin-left: 68px; }
+    .navbar-inner, .content { padding-left: 20px; padding-right: 20px; }
+    .dashboard-grid { display: block; overflow: visible; background: transparent; border: 0; box-shadow: none; }
+    .summary-panel { border: 1px solid var(--border-soft); border-radius: 18px; }
+    .summary-panel .stats { display: grid; grid-template-columns: repeat(2, 1fr); }
+    .workspace-panel { margin-top: 18px; border: 1px solid var(--border-soft); border-radius: 18px; }
+  }
+
+  @media (max-width: 620px) {
+    .side-rail { position: fixed; inset: auto 12px 12px; width: auto; height: 58px; border: 1px solid var(--border-soft); border-radius: 18px; box-shadow: var(--shadow-lg); flex-direction: row; justify-content: center; }
+    .rail-logo, .rail-bottom { display: none; }
+    .rail-nav { flex: none; width: auto; padding: 0 10px; flex-direction: row; gap: 12px; }
+    .rail-item { width: 40px; height: 40px; }
+    .rail-item.active::before { display: none; }
+    .app-main { margin-left: 0; padding-bottom: 78px; }
+    .navbar-inner { min-height: 68px; padding: 0 15px; }
+    .brand-text p { display: none; }
+    .navbar .api-status { display: none; }
+    .navbar .btn { min-height: 36px; padding: 8px 13px; }
+    .content { padding: 26px 14px 30px; }
+    .page-heading { margin-bottom: 22px; }
+    .page-heading h2 { font-size: 27px; }
+    .summary-panel .stats { gap: 10px; }
+    .summary-panel .stat { min-height: 96px; }
+    .workspace-panel { padding: 20px 14px 24px; }
+    .workspace-heading { align-items: flex-start; }
+    .focus-grid { grid-template-columns: 1fr; }
+    .focus-card { min-height: 136px; }
+    .toolbar { flex-wrap: wrap; }
+    .toolbar select { flex: 1 1 calc(50% - 4px); }
+    .search-box { flex-basis: 100%; order: 3; }
+    .field.grid-2, .field.grid-3 { grid-template-columns: 1fr; }
+  }
+
+  /* ============================================================
+     Warm editorial theme — cream, plum & coral
+     ============================================================ */
+  :root {
+    --bg: #f8f4ed;
+    --bg-grain: #f1ebe2;
+    --surface: #fffdfa;
+    --surface-raised: #ffffff;
+    --surface-overlay: rgba(255,253,249,.9);
+    --surface-glass: rgba(255,253,249,.9);
+    --border: #ddd5ca;
+    --border-soft: #ebe3da;
+    --border-faint: #f3ece5;
+    --text: #282230;
+    --text-secondary: #5e5865;
+    --text-tertiary: #8f8792;
+    --text-quaternary: #b8afb8;
+    --accent: #7132b5;
+    --accent-hover: #62289f;
+    --accent-active: #54218a;
+    --accent-soft: #eee2f8;
+    --accent-softer: #f8f1fc;
+    --purple: #7132b5;
+    --orange: #efad31;
+    --pink: #ec6d58;
+    --red: #e85f4b;
+    --green: #65b98a;
+    --teal: #67b6ac;
+    --shadow-xs: 0 3px 10px rgba(71,48,39,.035);
+    --shadow-sm: 0 10px 28px rgba(71,48,39,.06);
+    --shadow-md: 0 16px 38px rgba(71,48,39,.09);
+    --shadow-lg: 0 24px 56px rgba(71,48,39,.14);
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 82% -5%, rgba(238,109,88,.07), transparent 28%),
+      radial-gradient(circle at 12% 12%, rgba(113,50,181,.055), transparent 25%),
+      var(--bg);
+  }
+  .side-rail { background: #fffaf4; border-color: var(--border-soft); }
+  .rail-logo::before {
+    width: 38px;
+    height: 38px;
+    border-radius: 13px;
+    clip-path: none;
+    background: linear-gradient(145deg, #8746c7, #6427a4);
+    filter: drop-shadow(0 9px 12px rgba(113,50,181,.2));
+    transform: rotate(9deg);
+  }
+  .rail-logo-core { top: 34px; width: 10px; height: 10px; background: #f4a338; box-shadow: 0 0 0 5px rgba(255,255,255,.14); }
+  .rail-item { border-radius: 15px; color: #b6aab5; }
+  .rail-item:hover { color: var(--accent); background: #f5eafb; }
+  .rail-item.active { background: linear-gradient(145deg, #8242c3, #6428a3); box-shadow: 0 10px 24px rgba(113,50,181,.24); }
+  .rail-item.active::before { background: #ec6d58; }
+
+  .navbar { background: rgba(255,251,246,.9); border-color: var(--border-soft); }
+  .navbar-inner { min-height: 78px; }
+  .brand-text h1 { font-family: Georgia, "Songti SC", "STSong", serif; font-size: 20px; font-weight: 500; }
+  .api-status { background: #fffdf9; }
+  .navbar .btn { border-radius: 15px; }
+
+  .content { padding-top: 34px; }
+  .page-heading { margin-bottom: 26px; }
+  .eyebrow { color: var(--accent); letter-spacing: .16em; }
+  .page-heading h2 {
+    font-family: Georgia, "Songti SC", "STSong", serif;
+    font-size: clamp(31px, 3.6vw, 45px);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -.045em;
+  }
+  .page-heading p { color: var(--text-tertiary); }
+
+  .dashboard-grid {
+    background: rgba(255,253,249,.88);
+    border-color: var(--border-soft);
+    border-radius: 28px;
+    box-shadow: 0 22px 60px rgba(80,51,35,.07);
+  }
+  .summary-panel {
+    background: linear-gradient(180deg, #f5f0e9 0%, #faf6f0 100%);
+    border-color: var(--border-soft);
+  }
+  .workspace-panel { background: #fffdfa; }
+  .section-kicker { color: var(--accent); letter-spacing: .16em; }
+  .section-heading h3, .records-heading h3 { color: var(--text); }
+  .section-date { color: var(--text-tertiary); }
+
+  .summary-panel .stats { margin-bottom: 0; gap: 14px; }
+  .summary-panel .stat {
+    min-height: 108px;
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 20px;
+    background: rgba(255,253,249,.95);
+    box-shadow: 0 12px 30px rgba(75,52,39,.055);
+  }
+  .summary-panel .stat-label { color: var(--text-tertiary); }
+  .summary-panel .stat-value { color: var(--text); font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
+  .summary-panel .stat-icon { border-radius: 11px; }
+  .summary-panel .stat:nth-child(1) .stat-icon { color: #7132b5; background: #f0e5f8; }
+  .summary-panel .stat:nth-child(2) .stat-icon { color: #d88b16; background: #fff0d3; }
+  .summary-panel .stat:nth-child(3) .stat-icon { color: #438b66; background: #e5f3e9; }
+  .summary-panel .stat:nth-child(4) .stat-icon { color: #d65e4b; background: #fae8e2; }
+
+  .segment { padding: 4px; border-radius: 14px; background: #f2ece4; }
+  .segment-item { padding: 7px 15px; border-radius: 11px; }
+  .segment-item.active { background: var(--accent); box-shadow: 0 7px 16px rgba(113,50,181,.2); }
+
+  .focus-grid { gap: 16px; }
+  .focus-card { min-height: 160px; padding: 22px; border-radius: 24px; color: #302833; }
+  .focus-card::after { border-color: rgba(255,255,255,.3); }
+  .focus-card.purple {
+    background: linear-gradient(140deg, #eee7fb 0%, #e4d8f6 100%);
+    box-shadow: 0 16px 30px rgba(113,50,181,.1);
+  }
+  .focus-card.yellow {
+    background: linear-gradient(140deg, #fae7bd 0%, #f5dba0 100%);
+    box-shadow: 0 16px 30px rgba(190,135,40,.1);
+  }
+  .focus-card.empty { background: linear-gradient(140deg, #f1ece6, #ebe4dc); }
+  .focus-value { font-family: Georgia, "Songti SC", serif; font-size: 23px; font-weight: 600; }
+  .focus-pill { padding: 5px 10px; border-color: rgba(58,42,55,.13); background: rgba(255,255,255,.24); }
+
+  .toolbar select, .search-box input { min-height: 38px; border-radius: 13px; background-color: #f8f3ed; border-color: transparent; }
+  .card { border-color: var(--border-soft); border-radius: 20px; background: #fff; box-shadow: 0 10px 28px rgba(74,49,37,.035); }
+  thead th { background: #f8f3ed; color: #a49aa3; }
+  tbody tr:hover { background: #fdf9f4; }
+  .company-mark { border-radius: 12px; color: var(--accent); background: #f0e5f8; }
+  .col { border-radius: 20px; background: #f7f2ec; }
+  .ticket { border-radius: 16px; background: #fffdfa; }
+
+  .btn { border-radius: 14px; background: var(--accent); box-shadow: 0 8px 18px rgba(113,50,181,.2); }
+  .btn:hover { background: var(--accent-hover); box-shadow: 0 10px 22px rgba(113,50,181,.25); }
+  .btn.ghost { background: #fffaf4; }
+  input, select, textarea { background-color: #fffdfa; border-color: var(--border-soft); }
+  input:focus, select:focus, textarea:focus { border-color: #9a67c8; box-shadow: 0 0 0 3.5px #f2e8f8; }
+  .modal { border-radius: 26px; background: #fffdfa; }
+  .overlay { background: rgba(45,34,42,.28); }
+  .text-editor { border-radius: 26px; background: #fffdfa; }
+  .rich-text-toolbar { background: #f6f0e9; }
+  .toast { background: rgba(53,39,51,.9); }
+
+  @media (max-width: 820px) {
+    .summary-panel, .workspace-panel { border-radius: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="side-rail" aria-label="主导航">
+    <div class="rail-logo" aria-label="简历投递管理">
+      <span class="rail-logo-core"></span>
+    </div>
+    <nav class="rail-nav">
+      <button class="rail-item view-trigger active" data-view="table" type="button" aria-label="投递列表" title="投递列表">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="7" x2="19" y2="7"/><line x1="5" y1="12" x2="19" y2="12"/><line x1="5" y1="17" x2="19" y2="17"/></svg>
+      </button>
+      <button class="rail-item view-trigger" data-view="board" type="button" aria-label="进度看板" title="进度看板">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="7" height="16" rx="2"/><rect x="14" y="4" width="7" height="9" rx="2"/></svg>
+      </button>
+      <button class="rail-item" id="btn-new-rail" type="button" aria-label="新增投递" title="新增投递">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </nav>
+    <div class="rail-bottom">
+      <span class="rail-dot"></span>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="navbar">
+      <div class="navbar-inner">
+        <div class="brand-text">
+          <h1>求职工作台</h1>
+          <p>Resume Dashboard</p>
+        </div>
+        <div class="nav-spacer"></div>
+        <div class="api-status offline" id="api-status">
+          <span class="pulse"></span>
+          <span id="api-status-text">检测中</span>
+        </div>
+        <button class="btn" id="btn-new" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          新增投递
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+      <header class="page-heading">
+        <div class="page-heading-copy">
+          <div class="eyebrow">Dashboard</div>
+          <h2>你好，今天也要稳稳向前。</h2>
+          <p>把每一次投递变成清晰、可掌控的下一步。</p>
+        </div>
+      </header>
+
+      <div class="dashboard-grid">
+        <aside class="summary-panel">
+          <div class="section-heading">
+            <div>
+              <span class="section-kicker">Overview</span>
+              <h3>投递概览</h3>
+            </div>
+            <span class="section-date" id="today-label">今天</span>
+          </div>
+          <div class="stats" id="stats"></div>
+        </aside>
+
+        <section class="workspace-panel">
+          <div class="section-heading workspace-heading">
+            <div>
+              <span class="section-kicker">Pipeline</span>
+              <h3>投递状态</h3>
+            </div>
+            <div class="segment" role="tablist" aria-label="切换投递视图">
+              <button class="segment-item view-trigger active" data-view="table" role="tab" aria-selected="true">列表</button>
+              <button class="segment-item view-trigger" data-view="board" role="tab" aria-selected="false">看板</button>
+            </div>
+          </div>
+
+          <div class="focus-grid" id="focus-grid"></div>
+
+          <div class="records-heading">
+            <div>
+              <span class="section-kicker">Applications</span>
+              <h3>全部投递</h3>
+            </div>
+            <div class="toolbar">
+              <select id="filter-status" aria-label="按投递进度筛选"><option value="">全部进度</option></select>
+              <select id="filter-priority" aria-label="按心仪度筛选"><option value="">全部心仪度</option></select>
+              <div class="search-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+                <input id="search" type="search" aria-label="搜索公司或岗位" placeholder="搜索公司 / 岗位…" />
+              </div>
+            </div>
+          </div>
+
+          <div class="card" id="view-table">
+            <table>
+              <thead><tr id="thead-row"></tr></thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="board hidden" id="view-board"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+const CONFIG = {
+  storageKey: "resume-tracker-v2",
+  apiBase: "/api",
+
+  // 进度状态 — 统一 Apple System Colors
+  statuses: [
+    { key: "applied",    label: "简历已投递", color: "#f0e5f8", text: "#7132b5" },
+    { key: "screening",  label: "简历筛选",   color: "#eee6f5", text: "#70439b" },
+    { key: "assessment", label: "测评/AI面",  color: "#e6f2ed", text: "#46876a" },
+    { key: "round1",     label: "一面",       color: "#fff0d2", text: "#b67411" },
+    { key: "round2",     label: "二面",       color: "#fae8e2", text: "#c95d4b" },
+    { key: "round3",     label: "三面",       color: "#ece1f5", text: "#7741a7" },
+    { key: "final",      label: "终面",       color: "#fbe8d6", text: "#bd7037" },
+    { key: "offer",      label: "已拿 Offer", color: "#e5f3e9", text: "#438b66" },
+    { key: "joined",     label: "已入职",     color: "#dfefe4", text: "#397858" },
+    { key: "rejected",   label: "已结束",     color: "#eee9e4", text: "#8b817d" },
+  ],
+
+  priorities: [
+    { key: "S", label: "非常想去", color: "#fae8e2", text: "#c95d4b" },
+    { key: "A", label: "很想去",   color: "#fff0d2", text: "#b67411" },
+    { key: "B", label: "一般",     color: "#f0e5f8", text: "#7132b5" },
+    { key: "C", label: "练手",     color: "#eee9e4", text: "#8b817d" },
+  ],
+
+  columns: [
+    { key: "company", label: "公司 / 岗位" },
+    { key: "status",  label: "当前进度", type: "status" },
+    { key: "priority",label: "心仪度",   type: "priority" },
+    { key: "salary",  label: "薪资" },
+    { key: "location",label: "地点" },
+    { key: "applyDate", label: "投递时间" },
+    { key: "nextDate",  label: "下次面试" },
+    { key: "url",     label: "JD",      type: "link" },
+  ],
+
+  seed: [
+    {
+      id: 1, company: "字节跳动", role: "前端开发工程师",
+      status: "round1", priority: "A", salary: "25-45K", location: "北京",
+      applyDate: "2026-08-01", nextDate: "2026-08-13",
+      url: "https://jobs.bytedance.com/",
+      positionDescription: "",
+      jdDescription: "负责抖音电商相关业务的前端开发工作，使用 React / Vue 技术栈。",
+      jdRequirements: "3 年以上前端开发经验；精通 React/Vue；熟悉工程化工具链。",
+      note: "朋友内推，JD 看起来挺匹配。",
+      interviews: [
+        { stage: "简历筛选", date: "2026-08-03", summary: "HR 电话沟通，确认基本信息和意向。" },
+        { stage: "测评/AI面", date: "2026-08-05", summary: "在线测评 + AI 面试，主要考察综合能力。" },
+      ]
+    },
+    {
+      id: 2, company: "阿里巴巴", role: "高级前端工程师",
+      status: "screening", priority: "S", salary: "30-50K", location: "杭州",
+      applyDate: "2026-08-05", nextDate: "",
+      url: "",
+      positionDescription: "",
+      jdDescription: "负责淘宝首页相关业务的架构与开发。",
+      jdRequirements: "5 年以上经验，精通前端架构设计，有性能优化经验。",
+      note: "梦司，全力以赴！",
+      interviews: []
+    },
+    {
+      id: 3, company: "某创业公司", role: "全栈开发",
+      status: "rejected", priority: "C", salary: "18-25K", location: "上海",
+      applyDate: "2026-07-20", nextDate: "",
+      url: "",
+      positionDescription: "",
+      jdDescription: "",
+      jdRequirements: "",
+      note: "练手投的，挂在了技术面。",
+      interviews: [
+        { stage: "一面", date: "2026-07-25", summary: "算法题写崩了（动态规划题），前端基础回答还行。HR 之后说综合不合适。" },
+      ]
+    },
+  ],
+
+  // 统计 — 使用 SVG icon 而非 emoji
+  stats: [
+    { label: "总投递数", icon: "doc", calc: items => items.length },
+    { label: "面试进行中", icon: "target", calc: items => items.filter(i => ["screening","assessment","round1","round2","round3","final"].includes(i.status)).length },
+    { label: "已拿 Offer", icon: "check", calc: items => items.filter(i => i.status === "offer" || i.status === "joined").length },
+    { label: "本月投递", icon: "calendar", calc: items => {
+        const now = new Date();
+        const ym = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+        return items.filter(i => (i.applyDate || "").startsWith(ym)).length;
+      }
+    },
+  ],
+};
+
+// SVG 图标库 — 统一风格，2px stroke，圆角
+const ICONS = {
+  doc: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+  target: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+  calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/><line x1="10" y1="10" x2="10" y2="17"/><line x1="14" y1="10" x2="14" y2="17"/></svg>`,
+  link: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
+  building: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><line x1="9" y1="9" x2="9" y2="9.01"/><line x1="9" y1="12" x2="9" y2="12.01"/><line x1="9" y1="15" x2="9" y2="15.01"/></svg>`,
+  money: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+  clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+  lightbulb: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>`,
+  briefcase: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+  fileText: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+  users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  inbox: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>`,
+};
+
+const INTERVIEW_STAGES = ["一面", "二面", "三面", "终面", "HR谈薪"];
+
+/* ============================================================
+   数据层 — 优先用后端 API，回退 localStorage
+   ============================================================ */
+const store = {
+  apiOnline: false,
+
+  async load() {
+    try {
+      const res = await fetch(`${CONFIG.apiBase}/items`);
+      if (res.ok) {
+        const data = await res.json();
+        this.apiOnline = true;
+        return data;
+      }
+    } catch (e) {}
+    this.apiOnline = false;
+    const raw = localStorage.getItem(CONFIG.storageKey);
+    if (raw) { try { return JSON.parse(raw); } catch (e) {} }
+    return structuredClone(CONFIG.seed);
+  },
+
+  async save(items) {
+    if (this.apiOnline) {
+      try {
+        await fetch(`${CONFIG.apiBase}/items`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(items),
+        });
+        return;
+      } catch (e) { this.apiOnline = false; }
+    }
+    localStorage.setItem(CONFIG.storageKey, JSON.stringify(items));
+  },
+};
+
+let items = CONFIG.seed;
+let currentView = "table";
+
+const $ = sel => document.querySelector(sel);
+const statusOf = k => CONFIG.statuses.find(s => s.key === k) || { label: k, color: "#eee", text: "#333" };
+const prioOf = k => CONFIG.priorities.find(p => p.key === k) || { key: k, label: k, color: "#eee", text: "#333" };
+
+function showToast(msg) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2000);
+}
+
+function escapeHTML(value = "") {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function plainTextToHTML(value = "") {
+  return escapeHTML(value)
+    .replace(/  /g, "&nbsp;&nbsp;")
+    .replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;")
+    .replace(/\r?\n/g, "<br>");
+}
+
+function isRichText(value = "") {
+  return /<(?:p|div|br|strong|b|em|i|u|s|strike|ul|ol|li|h[1-6]|blockquote|span)\b/i.test(value);
+}
+
+function summaryHTML(value = "") {
+  return isRichText(value) ? value : plainTextToHTML(value);
+}
+
+function sanitizeRichText(value = "") {
+  const template = document.createElement("template");
+  template.innerHTML = value;
+  const allowedTags = new Set(["P", "DIV", "BR", "STRONG", "B", "EM", "I", "U", "S", "STRIKE", "UL", "OL", "LI", "H2", "H3", "BLOCKQUOTE", "SPAN"]);
+  const allowedStyles = new Set(["text-align"]);
+  const cleanNode = node => {
+    [...node.childNodes].forEach(child => {
+      if (child.nodeType === Node.COMMENT_NODE) {
+        child.remove();
+        return;
+      }
+      if (child.nodeType !== Node.ELEMENT_NODE) return;
+      if (!allowedTags.has(child.tagName)) {
+        cleanNode(child);
+        child.replaceWith(...child.childNodes);
+        return;
+      }
+      [...child.attributes].forEach(attr => {
+        if (attr.name !== "style") child.removeAttribute(attr.name);
+      });
+      if (child.hasAttribute("style")) {
+        [...child.style].forEach(prop => {
+          if (!allowedStyles.has(prop)) child.style.removeProperty(prop);
+        });
+        if (!child.getAttribute("style")) child.removeAttribute("style");
+      }
+      cleanNode(child);
+    });
+  };
+  cleanNode(template.content);
+  return template.innerHTML;
+}
+
+function openTextEditor({ title, subtitle, value = "", onSave }) {
+  const editorOverlay = document.createElement("div");
+  editorOverlay.className = "overlay text-editor-overlay";
+  editorOverlay.innerHTML = `<div class="text-editor" role="dialog" aria-modal="true" aria-labelledby="text-editor-title">
+    <div class="text-editor-header">
+      <div>
+        <h3 id="text-editor-title">${escapeHTML(title)}</h3>
+        <p>${escapeHTML(subtitle)}</p>
+      </div>
+      <button class="text-editor-close" type="button" aria-label="关闭文本编辑器">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="rich-text-toolbar" role="toolbar" aria-label="文本格式工具栏">
+      <select id="editor-format" aria-label="段落格式">
+        <option value="p">正文</option>
+        <option value="h2">大标题</option>
+        <option value="h3">小标题</option>
+        <option value="blockquote">引用</option>
+      </select>
+      <span class="toolbar-divider"></span>
+      <button class="editor-tool tool-bold" type="button" data-command="bold" aria-label="加粗" title="加粗">B</button>
+      <button class="editor-tool tool-italic" type="button" data-command="italic" aria-label="斜体" title="斜体">I</button>
+      <button class="editor-tool tool-underline" type="button" data-command="underline" aria-label="下划线" title="下划线">U</button>
+      <button class="editor-tool tool-strike" type="button" data-command="strikeThrough" aria-label="删除线" title="删除线">S</button>
+      <span class="toolbar-divider"></span>
+      <button class="editor-tool" type="button" data-command="insertUnorderedList" aria-label="项目符号" title="项目符号">•≡</button>
+      <button class="editor-tool" type="button" data-command="insertOrderedList" aria-label="编号列表" title="编号列表">1.</button>
+      <span class="toolbar-divider"></span>
+      <button class="editor-tool" type="button" data-command="justifyLeft" aria-label="左对齐" title="左对齐">≡</button>
+      <button class="editor-tool" type="button" data-command="justifyCenter" aria-label="居中" title="居中">≣</button>
+      <button class="editor-tool" type="button" data-command="justifyRight" aria-label="右对齐" title="右对齐">≡</button>
+      <span class="toolbar-divider"></span>
+      <button class="editor-tool" type="button" data-command="undo" aria-label="撤销" title="撤销">↶</button>
+      <button class="editor-tool" type="button" data-command="redo" aria-label="重做" title="重做">↷</button>
+      <button class="editor-tool" type="button" data-command="removeFormat" aria-label="清除格式" title="清除格式">Tx</button>
+    </div>
+    <div id="expanded-text-editor" class="rich-editor-surface" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="记录面试问题、回答思路、感受与后续改进点…"></div>
+    <div class="rich-editor-hint">支持换行、连续空格、标题、列表和常用文字格式</div>
+    <div class="text-editor-footer">
+      <span class="text-editor-count"><span id="expanded-text-count">0</span> 字</span>
+      <div class="spacer"></div>
+      <button class="btn ghost" id="expanded-text-cancel" type="button">取消</button>
+      <button class="btn" id="expanded-text-save" type="button">完成编辑</button>
+    </div>
+  </div>`;
+  document.body.appendChild(editorOverlay);
+
+  const editor = editorOverlay.querySelector("#expanded-text-editor");
+  const count = editorOverlay.querySelector("#expanded-text-count");
+  editor.innerHTML = sanitizeRichText(summaryHTML(value));
+  const updateCount = () => { count.textContent = (editor.innerText || "").length; };
+  updateCount();
+  requestAnimationFrame(() => {
+    editor.focus();
+    const range = document.createRange();
+    range.selectNodeContents(editor);
+    range.collapse(false);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  });
+
+  const closeEditor = () => editorOverlay.remove();
+  const saveEditor = async () => {
+    const saveButton = editorOverlay.querySelector("#expanded-text-save");
+    saveButton.disabled = true;
+    saveButton.textContent = "保存中…";
+    try {
+      await onSave(sanitizeRichText(editor.innerHTML));
+      closeEditor();
+    } catch (error) {
+      saveButton.disabled = false;
+      saveButton.textContent = "完成编辑";
+      showToast("保存失败，请重试");
+    }
+  };
+  editor.oninput = updateCount;
+  editor.onpaste = e => {
+    e.preventDefault();
+    const text = e.clipboardData.getData("text/plain");
+    document.execCommand("insertText", false, text);
+  };
+  editorOverlay.querySelectorAll("[data-command]").forEach(button => {
+    button.onmousedown = e => e.preventDefault();
+    button.onclick = () => {
+      editor.focus();
+      document.execCommand(button.dataset.command, false);
+      updateCount();
+    };
+  });
+  editorOverlay.querySelector("#editor-format").onchange = e => {
+    editor.focus();
+    document.execCommand("formatBlock", false, e.target.value);
+    e.target.value = "p";
+  };
+  editorOverlay.querySelector(".text-editor-close").onclick = closeEditor;
+  editorOverlay.querySelector("#expanded-text-cancel").onclick = closeEditor;
+  editorOverlay.querySelector("#expanded-text-save").onclick = saveEditor;
+  editorOverlay.onclick = e => { if (e.target === editorOverlay) closeEditor(); };
+  editorOverlay.onkeydown = e => {
+    if (e.key === "Escape") closeEditor();
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      e.preventDefault();
+      saveEditor();
+    }
+  };
+}
+
+function splitJDText(rawText = "") {
+  const normalized = rawText
+    .replace(/\r/g, "")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+  const headingPatterns = {
+    positionDescription: /(?:职位|岗位)描述(?!职责)\s*[：:]?/i,
+    responsibilities: /(?:(?:岗位|工作|职位|主要)职责(?:描述)?|职责描述|工作内容)\s*[：:]?/i,
+    requirements: /(?:(?:任职|岗位|职位|资格|能力)要求|任职条件|岗位条件|任职资格|资格条件)\s*[：:]?/i,
+  };
+  const headings = Object.entries(headingPatterns)
+    .map(([key, pattern]) => {
+      const match = normalized.match(pattern);
+      return match ? { key, index: match.index, length: match[0].length } : null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.index - b.index);
+
+  const sections = { positionDescription: "", responsibilities: "", requirements: "" };
+  if (!headings.length) {
+    sections.responsibilities = normalized;
+    return sections;
+  }
+  headings.forEach((heading, index) => {
+    const start = heading.index + heading.length;
+    const end = headings[index + 1]?.index ?? normalized.length;
+    sections[heading.key] = normalized.slice(start, end).trim();
+  });
+  const preface = normalized.slice(0, headings[0].index).trim();
+  if (preface && !sections.positionDescription) sections.positionDescription = preface;
+  return sections;
+}
+
+function openOCRDialog(onApply) {
+  const ocrOverlay = document.createElement("div");
+  ocrOverlay.className = "overlay";
+  ocrOverlay.innerHTML = `<div class="modal ocr-modal" role="dialog" aria-modal="true" aria-labelledby="ocr-title">
+    <h2 id="ocr-title">截图识别岗位信息</h2>
+    <div class="sub">截图后可直接按 ⌘V 粘贴。图片只在本机识别，不会上传到第三方。</div>
+    <input id="ocr-file" type="file" accept="image/png,image/jpeg,image/heic,image/heif,image/tiff" hidden />
+    <div class="ocr-dropzone" id="ocr-dropzone" role="button" tabindex="0" aria-label="选择、拖入或粘贴岗位截图">
+      <div>
+        <div class="ocr-dropzone-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M21 15l-5-5L5 19"/></svg>
+        </div>
+        <strong>点击选择、拖入或直接粘贴截图</strong>
+        <span>截图后按 ⌘V 即可识别，无需先保存到本地</span>
+        <div class="ocr-file-name" id="ocr-file-name"></div>
+      </div>
+    </div>
+    <div class="ocr-paste-row">
+      <button class="ocr-paste-button" id="ocr-paste" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M8 9h8M8 13h8"/></svg>
+        从剪贴板粘贴
+      </button>
+      <span class="ocr-shortcut">⌘ V</span>
+    </div>
+    <div class="ocr-status" id="ocr-status">识别结果会自动区分职位描述、岗位职责和任职要求，你也可以在填入前修改。</div>
+    <div class="ocr-preview hidden" id="ocr-preview">
+      <div class="field ocr-position-description"><label>职位描述</label><textarea id="ocr-position-description"></textarea></div>
+      <div class="field"><label>岗位职责</label><textarea id="ocr-responsibilities"></textarea></div>
+      <div class="field"><label>任职要求</label><textarea id="ocr-requirements"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <div class="spacer"></div>
+      <button class="btn ghost" id="ocr-cancel" type="button">取消</button>
+      <button class="btn" id="ocr-apply" type="button" disabled>填入岗位信息</button>
+    </div>
+  </div>`;
+  document.body.appendChild(ocrOverlay);
+
+  const input = ocrOverlay.querySelector("#ocr-file");
+  const dropzone = ocrOverlay.querySelector("#ocr-dropzone");
+  const status = ocrOverlay.querySelector("#ocr-status");
+  const preview = ocrOverlay.querySelector("#ocr-preview");
+  const applyButton = ocrOverlay.querySelector("#ocr-apply");
+  const positionDescription = ocrOverlay.querySelector("#ocr-position-description");
+  const responsibilities = ocrOverlay.querySelector("#ocr-responsibilities");
+  const requirements = ocrOverlay.querySelector("#ocr-requirements");
+  const fileName = ocrOverlay.querySelector("#ocr-file-name");
+  const closeOCR = () => {
+    document.removeEventListener("paste", handlePaste);
+    ocrOverlay.remove();
+  };
+
+  const recognize = async file => {
+    if (!file) return;
+    if (file.size > 12 * 1024 * 1024) {
+      status.className = "ocr-status error";
+      status.textContent = "图片超过 12MB，请压缩后再试。";
+      return;
+    }
+    fileName.textContent = file.name;
+    status.className = "ocr-status loading";
+    status.textContent = "正在识别文字，请稍候…";
+    applyButton.disabled = true;
+    preview.classList.add("hidden");
+    try {
+      const response = await fetch("/api/ocr", { method: "POST", headers: { "Content-Type": file.type || "image/png" }, body: file });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "识别失败");
+      if (!result.text || !result.text.trim()) throw new Error("没有识别到文字，请选择更清晰的截图");
+      const sections = splitJDText(result.text);
+      positionDescription.value = sections.positionDescription;
+      responsibilities.value = sections.responsibilities;
+      requirements.value = sections.requirements;
+      preview.classList.remove("hidden");
+      applyButton.disabled = false;
+      status.className = "ocr-status";
+      status.textContent = sections.requirements ? "识别完成，已自动分为三栏。请确认后填入。" : "识别完成，部分标题未找到，请手动调整三栏内容。";
+    } catch (error) {
+      status.className = "ocr-status error";
+      status.textContent = error.message || "文字识别失败，请重试。";
+    }
+  };
+
+  const imageFromClipboardItems = items => {
+    for (const item of items || []) {
+      if (item.type && item.type.startsWith("image/")) return item.getAsFile();
+    }
+    return null;
+  };
+
+  const handlePaste = e => {
+    const image = imageFromClipboardItems(e.clipboardData?.items);
+    if (!image) {
+      const target = e.target;
+      if (target?.matches?.("textarea, input, [contenteditable='true']")) return;
+      status.className = "ocr-status error";
+      status.textContent = "剪贴板中没有图片。请先截图，再按 ⌘V。";
+      return;
+    }
+    e.preventDefault();
+    recognize(image);
+  };
+
+  const pasteFromClipboard = async () => {
+    try {
+      if (!navigator.clipboard?.read) {
+        status.className = "ocr-status";
+        status.textContent = "请直接按 ⌘V 粘贴截图。";
+        dropzone.focus();
+        return;
+      }
+      const clipboardItems = await navigator.clipboard.read();
+      for (const clipboardItem of clipboardItems) {
+        const imageType = clipboardItem.types.find(type => type.startsWith("image/"));
+        if (imageType) {
+          const blob = await clipboardItem.getType(imageType);
+          recognize(new File([blob], "剪贴板截图.png", { type: imageType }));
+          return;
+        }
+      }
+      throw new Error("剪贴板中没有图片，请先截图");
+    } catch (error) {
+      status.className = "ocr-status error";
+      status.textContent = error.message?.includes("剪贴板") ? error.message : "浏览器未允许读取剪贴板，请直接按 ⌘V 粘贴。";
+      dropzone.focus();
+    }
+  };
+
+  dropzone.onclick = () => input.click();
+  dropzone.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } };
+  input.onchange = () => recognize(input.files[0]);
+  dropzone.ondragover = e => { e.preventDefault(); dropzone.classList.add("dragover"); };
+  dropzone.ondragleave = () => dropzone.classList.remove("dragover");
+  dropzone.ondrop = e => { e.preventDefault(); dropzone.classList.remove("dragover"); recognize(e.dataTransfer.files[0]); };
+  ocrOverlay.querySelector("#ocr-paste").onclick = pasteFromClipboard;
+  document.addEventListener("paste", handlePaste);
+  requestAnimationFrame(() => dropzone.focus());
+  ocrOverlay.querySelector("#ocr-cancel").onclick = closeOCR;
+  applyButton.onclick = () => {
+    onApply({
+      positionDescription: positionDescription.value,
+      responsibilities: responsibilities.value,
+      requirements: requirements.value,
+    });
+    closeOCR();
+  };
+  ocrOverlay.onclick = e => { if (e.target === ocrOverlay) closeOCR(); };
+}
+
+function updateApiStatus() {
+  const el = $("#api-status");
+  const txt = $("#api-status-text");
+  if (store.apiOnline) {
+    el.className = "api-status online";
+    txt.textContent = "已同步";
+  } else {
+    el.className = "api-status offline";
+    txt.textContent = "本地存储";
+  }
+}
+
+function filtered() {
+  const s = $("#filter-status").value, p = $("#filter-priority").value, q = $("#search").value.trim().toLowerCase();
+  return items.filter(i =>
+    (!s || i.status === s) &&
+    (!p || i.priority === p) &&
+    (!q || (i.company || "").toLowerCase().includes(q) || (i.role || "").toLowerCase().includes(q))
+  );
+}
+
+function renderStats() {
+  $("#stats").innerHTML = CONFIG.stats.map(s =>
+    `<div class="stat">
+      <div class="stat-row">
+        <div class="stat-label">${s.label}</div>
+        <div class="stat-icon">${ICONS[s.icon] || ""}</div>
+      </div>
+      <div class="stat-value">${s.calc(items)}</div>
+    </div>`
+  ).join("");
+}
+
+function renderFocus() {
+  const today = new Date().toISOString().slice(0, 10);
+  const active = items.filter(i => !["rejected", "joined"].includes(i.status));
+  const upcoming = active
+    .filter(i => i.nextDate && i.nextDate >= today)
+    .sort((a, b) => a.nextDate.localeCompare(b.nextDate))[0];
+  const priority = active.find(i => i.priority === "S") || active.find(i => i.priority === "A");
+
+  const focusCard = upcoming
+    ? `<article class="focus-card purple">
+        <div class="focus-label">${ICONS.calendar}<span>下一场面试</span></div>
+        <div class="focus-value">${upcoming.company || "待确认公司"}</div>
+        <div class="focus-meta">${upcoming.role || "待确认岗位"}</div>
+        <span class="focus-pill">${upcoming.nextDate}</span>
+      </article>`
+    : `<article class="focus-card empty">
+        <div class="focus-label">${ICONS.calendar}<span>下一场面试</span></div>
+        <div class="focus-value">暂无安排</div>
+        <div class="focus-meta">有新面试时会显示在这里</div>
+      </article>`;
+
+  const priorityCard = priority
+    ? `<article class="focus-card yellow">
+        <div class="focus-label">${ICONS.target}<span>重点跟进</span></div>
+        <div class="focus-value">${priority.company || "待确认公司"}</div>
+        <div class="focus-meta">${priority.role || "待确认岗位"}</div>
+        <span class="focus-pill">${prioOf(priority.priority).key} · ${statusOf(priority.status).label}</span>
+      </article>`
+    : `<article class="focus-card empty">
+        <div class="focus-label">${ICONS.target}<span>重点跟进</span></div>
+        <div class="focus-value">暂无重点职位</div>
+        <div class="focus-meta">将心仪度设为 S 或 A 后显示</div>
+      </article>`;
+
+  $("#focus-grid").innerHTML = focusCard + priorityCard;
+
+  const now = new Date();
+  $("#today-label").textContent = now.toLocaleDateString("zh-CN", { month: "short", day: "numeric" });
+}
+
+function cell(item, col) {
+  if (col.key === "company") {
+    const company = item.company || "未填";
+    const mark = company.trim().slice(0, 1).toUpperCase();
+    return `<div class="company-cell">
+      <span class="company-mark" aria-hidden="true">${mark}</span>
+      <div><div class="role-text">${item.role || "（未填岗位）"}</div><div class="company-text">${item.company || "（未填公司）"}</div></div>
+    </div>`;
+  }
+  if (col.key === "nextDate") {
+    const d = item.nextDate;
+    if (!d) return `<span style="color:var(--text-quaternary)">—</span>`;
+    const today = new Date().toISOString().slice(0,10);
+    const color = d < today ? "var(--red)" : d === today ? "var(--orange)" : "var(--text)";
+    return `<span style="color:${color};font-weight:500">${d}</span>`;
+  }
+  if (col.type === "status") {
+    const s = statusOf(item.status);
+    return `<span class="badge" style="background:${s.color};color:${s.text}"><span class="dot"></span>${s.label}</span>`;
+  }
+  if (col.type === "priority") {
+    const p = prioOf(item.priority);
+    return `<span class="badge" style="background:${p.color};color:${p.text}">${p.key} · ${p.label}</span>`;
+  }
+  if (col.type === "link") {
+    if (!item.url) return `<span style="color:var(--text-quaternary)">—</span>`;
+    const safeUrl = /^https?:\/\//i.test(item.url) ? item.url : "https://" + item.url;
+    return `<a href="${safeUrl}" target="_blank" rel="noopener" class="link-icon" title="打开 JD 链接">${ICONS.link}</a>`;
+  }
+  const v = item[col.key] ?? "";
+  return v ? v : `<span style="color:var(--text-quaternary)">—</span>`;
+}
+
+function renderTable() {
+  $("#thead-row").innerHTML = CONFIG.columns.map(c => `<th>${c.label}</th>`).join("") + `<th class="col-actions"></th>`;
+  const data = filtered();
+  if (!data.length) {
+    $("#tbody").innerHTML = `<tr><td colspan="${CONFIG.columns.length + 1}">
+      <div class="empty-state">
+        ${ICONS.inbox}
+        <div class="empty-title">暂无投递记录</div>
+        <div class="empty-sub">点击右上角「新增投递」开始记录</div>
+      </div>
+    </td></tr>`;
+    return;
+  }
+  $("#tbody").innerHTML = data.map(item =>
+    `<tr data-id="${item.id}">` +
+    CONFIG.columns.map(c => `<td class="${c.key === "company" ? "name" : ""}">${cell(item, c)}</td>`).join("") +
+    `<td class="col-actions"><button class="icon-btn js-del" type="button" title="删除" aria-label="删除投递记录">${ICONS.trash}</button></td>` +
+    `</tr>`
+  ).join("");
+  $("#tbody").querySelectorAll("td.name").forEach(td =>
+    td.onclick = () => openModal(items.find(i => i.id == td.parentElement.dataset.id)));
+  $("#tbody").querySelectorAll(".js-del").forEach(btn =>
+    btn.onclick = e => { e.stopPropagation(); confirmDelete(items.find(i => i.id == btn.closest("tr").dataset.id)); });
+}
+
+function renderBoard() {
+  const data = filtered();
+  $("#view-board").innerHTML = CONFIG.statuses.map(s => {
+    const list = data.filter(i => i.status === s.key);
+    return `<div class="col" data-status="${s.key}">
+      <div class="col-header">
+        <span class="col-title"><span class="badge" style="background:${s.color};color:${s.text}"><span class="dot"></span>${s.label}</span></span>
+        <span class="col-count">${list.length}</span>
+      </div>
+      <div class="col-body">${list.map(ticketHTML).join("")}</div>
+    </div>`;
+  }).join("");
+  wireDnD();
+}
+
+function ticketHTML(item) {
+  const p = prioOf(item.priority);
+  const nextTag = item.nextDate
+    ? `<span class="t-next">${ICONS.clock}${item.nextDate}</span>`
+    : `<span class="t-salary">${ICONS.money}${item.salary || "面议"}</span>`;
+  return `<div class="ticket" draggable="true" data-id="${item.id}">
+    <button class="icon-btn js-del t-del" type="button" title="删除" aria-label="删除投递记录">${ICONS.trash}</button>
+    <div class="t-name">${item.role || "（未填岗位）"}</div>
+    <div class="t-company">${ICONS.building}${item.company || "（未填公司）"} · ${item.location || "—"}</div>
+    <div class="t-meta">
+      <span class="badge" style="background:${p.color};color:${p.text};font-size:11px;padding:2px 8px">${p.key}·${p.label}</span>
+      ${nextTag}
+    </div>
+  </div>`;
+}
+
+function wireDnD() {
+  let dragId = null;
+  $("#view-board").querySelectorAll(".ticket").forEach(t => {
+    t.ondragstart = () => { dragId = t.dataset.id; t.classList.add("dragging"); };
+    t.ondragend = () => t.classList.remove("dragging");
+    t.onclick = () => openModal(items.find(i => i.id == t.dataset.id));
+  });
+  $("#view-board").querySelectorAll(".js-del").forEach(btn =>
+    btn.onclick = e => { e.stopPropagation(); confirmDelete(items.find(i => i.id == btn.closest(".ticket").dataset.id)); });
+  $("#view-board").querySelectorAll(".col").forEach(col => {
+    col.ondragover = e => { e.preventDefault(); col.classList.add("drop-hover"); };
+    col.ondragleave = () => col.classList.remove("drop-hover");
+    col.ondrop = () => {
+      col.classList.remove("drop-hover");
+      const item = items.find(i => i.id == dragId);
+      if (item && item.status !== col.dataset.status) {
+        const prev = item.status;
+        item.status = col.dataset.status;
+        persist();
+        showToast(`${statusOf(prev).label} → ${statusOf(col.dataset.status).label}`);
+      }
+    };
+  });
+}
+
+function render() {
+  renderStats();
+  renderFocus();
+  $("#view-table").classList.toggle("hidden", currentView !== "table");
+  $("#view-board").classList.toggle("hidden", currentView !== "board");
+  currentView === "table" ? renderTable() : renderBoard();
+}
+
+async function persist() {
+  await store.save(items);
+  updateApiStatus();
+  render();
+}
+
+/* ============================================================
+   Modal — 新建 / 编辑
+   ============================================================ */
+function openModal(item) {
+  const editing = !!item;
+  const today = new Date().toISOString().slice(0, 10);
+  const d = editing ? structuredClone(item) : {
+    id: Date.now(),
+    company: "", role: "",
+    status: CONFIG.statuses[0].key,
+    priority: CONFIG.priorities[1].key,
+    salary: "", location: "",
+    applyDate: today, nextDate: "",
+    url: "",
+    positionDescription: "", jdDescription: "", jdRequirements: "",
+    note: "",
+    interviews: [],
+  };
+
+  const opts = (arr, sel, lab = x => x.label, val = x => x.key) =>
+    arr.map(x => `<option value="${val(x)}" ${val(x) === sel ? "selected" : ""}>${lab(x)}</option>`).join("");
+  const prioOpts = opts(CONFIG.priorities, d.priority, x => `${x.key} · ${x.label}`);
+
+  let interviewDrafts = (d.interviews || []).map(interview => ({
+    stage: INTERVIEW_STAGES.includes(interview.stage) ? interview.stage : INTERVIEW_STAGES[0],
+    date: interview.date || today,
+    summary: interview.summary || "",
+  }));
+  if (!interviewDrafts.length) interviewDrafts.push({ stage: INTERVIEW_STAGES[0], date: today, summary: "" });
+
+  const overlay = document.createElement("div");
+  overlay.className = "overlay";
+  overlay.innerHTML = `<div class="modal">
+    <h2>${editing ? "编辑投递" : "新增投递记录"}</h2>
+    <div class="sub">${editing ? "修改后点击保存生效" : "填写投递信息，开始追踪进度"}</div>
+
+    ${editing ? "" : `<div class="help-tip">${ICONS.lightbulb}<span>可从招聘页面复制或截图识别「职位描述」「岗位职责」和「任职要求」，填入下方对应文本框记录完整 JD。投递链接粘贴后，列表中可一键打开。</span></div>`}
+
+    <div class="section-title">${ICONS.briefcase}基本信息</div>
+    <div class="field grid-2">
+      <div class="field"><label>公司名称 *</label><input id="m-company" value="${(d.company||'').replace(/"/g,'&quot;')}" placeholder="如：字节跳动" /></div>
+      <div class="field"><label>岗位名称 *</label><input id="m-role" value="${(d.role||'').replace(/"/g,'&quot;')}" placeholder="如：高级前端工程师" /></div>
+    </div>
+    <div class="field grid-3">
+      <div class="field"><label>心仪度</label><select id="m-priority">${prioOpts}</select></div>
+      <div class="field"><label>薪资范围</label><input id="m-salary" value="${(d.salary||'').replace(/"/g,'&quot;')}" placeholder="如：25-40K" /></div>
+      <div class="field"><label>工作地点</label><input id="m-location" value="${(d.location||'').replace(/"/g,'&quot;')}" placeholder="如：北京 / 远程" /></div>
+    </div>
+    <div class="field grid-3">
+      <div class="field"><label>当前进度</label><select id="m-status">${opts(CONFIG.statuses, d.status)}</select></div>
+      <div class="field"><label>投递日期</label><input type="date" id="m-applyDate" value="${d.applyDate || today}" /></div>
+      <div class="field"><label>下次面试时间</label><input type="date" id="m-nextDate" value="${d.nextDate || ''}" /></div>
+    </div>
+    <div class="field">
+      <label>投递 / JD 链接（一键打开）</label>
+      <input id="m-url" value="${(d.url||'').replace(/"/g,'&quot;')}" placeholder="https://..." />
+    </div>
+
+    <div class="section-title with-action">
+      <span class="section-title-label">${ICONS.fileText}职位描述 & 岗位职责 & 要求</span>
+      <button class="ocr-trigger" id="m-ocr" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 2v3M16 2v3M8 19v3M16 19v3"/><circle cx="12" cy="12" r="3"/></svg>
+        截图识别
+      </button>
+    </div>
+    <div class="field">
+      <label>职位描述</label>
+      <textarea id="m-positionDescription" rows="3" placeholder="把招聘页面的「职位描述」复制到这里；也可以使用右上角截图识别。">${d.positionDescription || ''}</textarea>
+    </div>
+    <div class="field">
+      <label>岗位职责</label>
+      <textarea id="m-jdDescription" rows="4" placeholder="把招聘页面的「岗位职责」复制到这里，方便面试前回顾；也可以使用右上角截图识别。">${d.jdDescription || ''}</textarea>
+    </div>
+    <div class="field">
+      <label>任职要求</label>
+      <textarea id="m-jdRequirements" rows="4" placeholder="把招聘页面的「任职要求」复制到这里；也可以使用右上角截图识别。">${d.jdRequirements || ''}</textarea>
+    </div>
+
+    <div class="section-title">${ICONS.users}面试记录 & 复盘</div>
+    <div class="interview-rows" id="m-interview-rows"></div>
+
+    <div class="section-title" style="margin-top:22px">备注</div>
+    <div class="field">
+      <textarea id="m-note" rows="3" placeholder="其他想记录的（如：内推人、HR 联系方式、谈薪策略等）">${d.note || ''}</textarea>
+    </div>
+
+    <div class="modal-actions">
+      ${editing ? '<button class="link-danger" id="m-del">删除此投递</button>' : ""}
+      <div class="spacer"></div>
+      <button class="btn ghost" id="m-cancel">取消</button>
+      <button class="btn" id="m-save">保存</button>
+    </div>
+  </div>`;
+
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.onclick = e => { if (e.target === overlay) close(); };
+  overlay.querySelector("#m-cancel").onclick = close;
+  overlay.querySelector("#m-ocr").onclick = () => openOCRDialog(result => {
+    const positionDescription = overlay.querySelector("#m-positionDescription");
+    const responsibilities = overlay.querySelector("#m-jdDescription");
+    const requirements = overlay.querySelector("#m-jdRequirements");
+    positionDescription.value = result.positionDescription;
+    responsibilities.value = result.responsibilities;
+    requirements.value = result.requirements;
+    showToast("已填入职位描述、岗位职责与要求");
+  });
+
+  const interviewRows = overlay.querySelector("#m-interview-rows");
+  const interviewPreviewText = summary => {
+    const preview = document.createElement("div");
+    preview.innerHTML = sanitizeRichText(summaryHTML(summary));
+    return (preview.innerText || preview.textContent || "").trim();
+  };
+  const renderInterviewRows = () => {
+    interviewRows.innerHTML = interviewDrafts.map((interview, index) => {
+      const preview = interviewPreviewText(interview.summary);
+      return `<div class="interview-add" data-index="${index}">
+        <span class="interview-row-number">第 ${index + 1} 轮面试</span>
+        <select class="js-interview-stage" aria-label="第 ${index + 1} 轮面试阶段">${INTERVIEW_STAGES.map(stage => `<option ${stage === interview.stage ? "selected" : ""}>${stage}</option>`).join("")}</select>
+        <input class="js-interview-date" type="date" value="${interview.date}" aria-label="第 ${index + 1} 轮面试日期" />
+        <button class="summary-launcher js-interview-summary ${preview ? "has-content" : ""}" type="button" aria-haspopup="dialog" title="单击展开编辑">
+          <span class="summary-launcher-text">${escapeHTML(preview || "单击展开填写面试复盘")}</span>
+          <span class="summary-launcher-icon">↗</span>
+        </button>
+        <button class="interview-row-action interview-row-add js-interview-add" type="button" aria-label="在下方新增一轮面试" title="新增一轮面试">＋</button>
+        <button class="interview-row-action interview-row-remove js-interview-remove" type="button" aria-label="删除第 ${index + 1} 轮面试" title="删除此轮">−</button>
+      </div>`;
+    }).join("");
+
+    interviewRows.querySelectorAll(".interview-add").forEach(row => {
+      const index = Number(row.dataset.index);
+      row.querySelector(".js-interview-stage").onchange = e => { interviewDrafts[index].stage = e.target.value; };
+      row.querySelector(".js-interview-date").onchange = e => { interviewDrafts[index].date = e.target.value; };
+      row.querySelector(".js-interview-summary").onclick = () => openTextEditor({
+        title: `${interviewDrafts[index].stage} · 面试复盘`,
+        subtitle: `第 ${index + 1} 轮面试，可记录问题、回答情况、感受和后续改进点`,
+        value: interviewDrafts[index].summary,
+        onSave: summary => { interviewDrafts[index].summary = summary; renderInterviewRows(); },
+      });
+      row.querySelector(".js-interview-add").onclick = () => {
+        interviewDrafts.splice(index + 1, 0, { stage: INTERVIEW_STAGES[Math.min(index + 1, INTERVIEW_STAGES.length - 1)], date: today, summary: "" });
+        renderInterviewRows();
+      };
+      row.querySelector(".js-interview-remove").onclick = () => {
+        interviewDrafts.splice(index, 1);
+        if (!interviewDrafts.length) interviewDrafts.push({ stage: INTERVIEW_STAGES[0], date: today, summary: "" });
+        renderInterviewRows();
+      };
+    });
+  };
+  renderInterviewRows();
+
+  overlay.querySelector("#m-save").onclick = async () => {
+    const company = overlay.querySelector("#m-company").value.trim();
+    const role = overlay.querySelector("#m-role").value.trim();
+    if (!company || !role) { showToast("公司名称和岗位名称必填哦"); return; }
+    d.company = company;
+    d.role = role;
+    d.status = overlay.querySelector("#m-status").value;
+    d.priority = overlay.querySelector("#m-priority").value;
+    d.salary = overlay.querySelector("#m-salary").value.trim();
+    d.location = overlay.querySelector("#m-location").value.trim();
+    d.applyDate = overlay.querySelector("#m-applyDate").value;
+    d.nextDate = overlay.querySelector("#m-nextDate").value;
+    d.url = overlay.querySelector("#m-url").value.trim();
+    d.positionDescription = overlay.querySelector("#m-positionDescription").value;
+    d.jdDescription = overlay.querySelector("#m-jdDescription").value;
+    d.jdRequirements = overlay.querySelector("#m-jdRequirements").value;
+    d.note = overlay.querySelector("#m-note").value;
+    d.interviews = interviewDrafts
+      .filter(interview => interview.summary && interview.summary.trim())
+      .map(interview => ({ stage: interview.stage, date: interview.date, summary: interview.summary }));
+    if (editing) Object.assign(item, d);
+    else items.unshift(d);
+    await persist();
+    close();
+    showToast(editing ? "已保存修改" : "已添加新投递");
+  };
+
+  if (editing) overlay.querySelector("#m-del").onclick = () => { close(); confirmDelete(d); };
+}
+
+/* ============================================================
+   Delete Confirmation
+   ============================================================ */
+function confirmDelete(item) {
+  if (!item) return;
+  const overlay = document.createElement("div");
+  overlay.className = "overlay";
+  overlay.innerHTML = `<div class="modal" style="width:400px">
+    <h2>删除投递记录</h2>
+    <div class="sub">确定删除「${item.company || ""} · ${item.role || ""}」？此操作不可撤销。</div>
+    <div class="modal-actions">
+      <div class="spacer"></div>
+      <button class="btn ghost" id="c-cancel">取消</button>
+      <button class="btn danger" id="c-ok">删除</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  const close = () => overlay.remove();
+  overlay.onclick = e => { if (e.target === overlay) close(); };
+  overlay.querySelector("#c-cancel").onclick = close;
+  overlay.querySelector("#c-ok").onclick = async () => {
+    items = items.filter(i => i.id !== item.id);
+    await persist();
+    close();
+    showToast("已删除");
+  };
+}
+
+/* ============================================================
+   Wire UI
+   ============================================================ */
+function initFilters() {
+  $("#filter-status").insertAdjacentHTML("beforeend", CONFIG.statuses.map(s => `<option value="${s.key}">${s.label}</option>`).join(""));
+  $("#filter-priority").insertAdjacentHTML("beforeend", CONFIG.priorities.map(p => `<option value="${p.key}">${p.key} · ${p.label}</option>`).join(""));
+}
+document.querySelectorAll(".view-trigger").forEach(tab =>
+  tab.onclick = () => {
+    document.querySelectorAll(".view-trigger").forEach(t => {
+      t.classList.remove("active");
+      if (t.hasAttribute("aria-selected")) t.setAttribute("aria-selected", "false");
+    });
+    document.querySelectorAll(`.view-trigger[data-view="${tab.dataset.view}"]`).forEach(t => {
+      t.classList.add("active");
+      if (t.hasAttribute("aria-selected")) t.setAttribute("aria-selected", "true");
+    });
+    currentView = tab.dataset.view;
+    render();
+  });
+["#filter-status", "#filter-priority", "#search"].forEach(sel => $(sel).oninput = render);
+$("#btn-new").onclick = () => openModal(null);
+$("#btn-new-rail").onclick = () => openModal(null);
+
+/* ============================================================
+   启动
+   ============================================================ */
+(async function init() {
+  initFilters();
+  items = await store.load();
+  updateApiStatus();
+  render();
+})();
+</script>
+</body>
+</html>

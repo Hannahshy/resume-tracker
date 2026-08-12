@@ -1,0 +1,21 @@
+# Personal application data
+data.json
+
+# Runtime logs
+.resume-tracker.log
+.resume-tracker-launcher.log
+
+# Local build and packaged app output
+.build/
+dist/
+
+# macOS metadata
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+
+# Legacy local launcher
+ResumeTracker.desktop

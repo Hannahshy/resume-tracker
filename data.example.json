@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "company": "示例公司",
+    "role": "产品经理",
+    "status": "round1",
+    "priority": "A",
+    "salary": "20-30K",
+    "location": "上海",
+    "applyDate": "2026-01-01",
+    "nextDate": "",
+    "url": "https://example.com/jobs/1",
+    "positionDescription": "这是一个示例职位描述。",
+    "jdDescription": "负责产品规划、需求分析和项目推进。",
+    "jdRequirements": "具备良好的沟通能力和结构化思维。",
+    "note": "这是公开示例数据，不包含真实个人信息。",
+    "interviews": [
+      {
+        "stage": "一面",
+        "date": "2026-01-05",
+        "summary": "<p>示例面试复盘内容。</p>"
+      }
+    ]
+  }
+]
