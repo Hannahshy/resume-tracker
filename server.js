@@ -9,9 +9,12 @@ const os = require("os");
 const path = require("path");
 const { execFile } = require("child_process");
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 const APP_VERSION = "2.1-ocr";
-const DATA_FILE = path.join(__dirname, "data.json");
+// 支持开发/演示时指定独立数据文件；正常使用仍保存到程序目录的 data.json。
+const DATA_FILE = process.env.RESUME_TRACKER_DATA_FILE
+  ? path.resolve(process.env.RESUME_TRACKER_DATA_FILE)
+  : path.join(__dirname, "data.json");
 const HTML_FILE = path.join(__dirname, "resume-tracker.html");
 const OCR_BINARY = path.join(__dirname, ".build", "ResumeTrackerOCR");
 
